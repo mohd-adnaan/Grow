@@ -75,7 +75,7 @@ const CustomDrawerContent = (props) => {
 
       <View style={styles.footer}>
         <Image
-          source={require('../../../assets/images/plantlogo.png')}
+          source={require('../../../assets/Images/plantlogo.png')}
           style={styles.footerImage}
           resizeMode="contain"
         />
@@ -89,7 +89,7 @@ const DrawerScreen = () => {
   return (
     <Drawer.Navigator drawerContent={(props) => <CustomDrawerContent {...props} />}>
       <Drawer.Screen
-        name="DAC"
+        name="Grow"
         component={MainScreen}
         options={{
           headerShown: true,

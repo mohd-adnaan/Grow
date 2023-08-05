@@ -36,7 +36,6 @@
 		{
 			$Message = "Successfully Registered!";
 			$code=3;
-			//$row = mysqli_fetch_row($result);
 			
 		}
 		else

@@ -50,7 +50,7 @@ const SignInScreen = () => {
   const login = async () => {
     try {
       fetch(
-        "http://192.168.43.22/Integrate/login.php", requestOptions, 100)
+        "http://10.2.20.38/Integrate/login.php", requestOptions, 100)
         .then((response) => response.json())
         .then(async response => {
           console.log("Message: ", response.Message);
@@ -157,7 +157,7 @@ const SignInScreen = () => {
           style={styles.footerImage}
           resizeMode="contain"
         />
-        <Text style={styles.footerText}>Design and Developed by NRSC, ISRO</Text>
+        <Text style={styles.footerText}>Design and Developed by A&A</Text>
       </View>
     </View>
   );

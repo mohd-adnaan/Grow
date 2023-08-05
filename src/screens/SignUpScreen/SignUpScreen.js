@@ -70,10 +70,9 @@ const SignUpScreen = () => {
     })
   };
 
-
   const register = async () => {
     try {
-      fetch("http://192.168.43.22/Integrate/register.php", requestOptions, 100)
+      fetch("http://10.2.20.38/Integrate/register.php", requestOptions, 100)
         .then((response) => response.json())
         .then(response => {
           console.log("Message: ", response.Message);

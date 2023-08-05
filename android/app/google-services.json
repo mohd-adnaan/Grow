@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "937950586629",
+    "project_id": "grow-e30ca",
+    "storage_bucket": "grow-e30ca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:937950586629:android:8e53fc31e5acff4b99b96c",
+        "android_client_info": {
+          "package_name": "com.grow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "937950586629-ndnb7qjhspdv7l9c2kq9s2pke3kk7arb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.grow",
+            "certificate_hash": "3d37996361cad07a37b1fca1c3d9072bbc528546"
+          }
+        },
+        {
+          "client_id": "937950586629-9iv40m7s3nem2jhfb7bn30n7sv4tdmt7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-ES8zcGN3qJt2_WcQ9htIKisd-zD3smM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "937950586629-9iv40m7s3nem2jhfb7bn30n7sv4tdmt7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
