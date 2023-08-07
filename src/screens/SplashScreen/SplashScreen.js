@@ -11,6 +11,7 @@ import {
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '@react-navigation/native';
 import plantLogo from '../../../assets/Images/plantlogo.png'; // Replace this with your plant-based logo.
 
@@ -42,7 +43,7 @@ const SplashScreen = ({ navigation }) => {
             >
                 <Text style={[styles.title, {
                     color: '#05375a' // Dark blue color for the title
-                }]}>Plantify</Text>
+                }]}>Grow</Text>
                 <Text style={styles.text}>Discover, care, and grow plants with ease.</Text>
                 <View style={styles.button}>
                     <TouchableOpacity onPress={handleGetStarted}>
@@ -65,7 +66,7 @@ const SplashScreen = ({ navigation }) => {
                         style={styles.footerImage}
                         resizeMode="contain"
                     />
-                    <Text style={styles.footerText}>Design and Developed by NRSC, ISRO</Text>
+                    <Text style={styles.footerText}>Design and Developed by A&A</Text>
                 </View>
             </Animatable.View>
         </View>

@@ -13,8 +13,9 @@ import AboutScreen from '../screens/AboutScreen';
 import SignOutScreen from '../screens/SignOutScreen/SignOutScreen';
 import UserScreen from '../screens/UserScreen/UserScreen';
 import Terms_PrivacyScreen from '../screens/Terms_PrivacyScreen/Terms_PrivacyScreen';
-import RegisterSuccessAnimation from "../screens/RegistrationSuccessAnimation/RegistrationSuccessAnimation"
-import DataScreen from "../screens/DataScreen/DataScreen"
+import RegisterSuccessAnimation from "../screens/RegistrationSuccessAnimation/RegistrationSuccessAnimation";
+import DataScreen from "../screens/DataScreen/DataScreen";
+import VerifyOTP from "../screens/VerifyOTPScreen/VerifyOTPScreen";
 const Stack = createNativeStackNavigator();
 const Navigation = () => {
   return (
@@ -33,6 +34,7 @@ const Navigation = () => {
         <Stack.Screen name = "Terms_Privacy" component={Terms_PrivacyScreen}/>
         <Stack.Screen name = "RegisterSuccess" component ={RegisterSuccessAnimation} />
         <Stack.Screen name= "DataScreen" component ={DataScreen}/>
+        <Stack.Screen name= "VerifyOTP" component = {VerifyOTP}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
