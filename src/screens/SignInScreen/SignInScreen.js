@@ -267,6 +267,7 @@ import {
   StyleSheet,
   useWindowDimensions,
   TextInput,
+  TouchableOpacity,
 } from 'react-native';
 
 //import Logo from '../../../assets/images/newlogoName.png';
@@ -290,7 +291,7 @@ const SignInScreen = () => {
   const navigation = useNavigation();
   const [IsOffline, setIsOffline] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [confirm,setConfirm] = useState(false);
   useEffect(() => {
     const removeNetInfoSubscription = NetInfo.addEventListener((state) => {
       const offline = !(state.isConnected && state.isInternetReachable);
@@ -353,11 +354,14 @@ const SignInScreen = () => {
     if (phoneNumber.length === 10 && !IsOffline) {
       //setIsLoading(true);
     //  login();
-    const phone = '+91' + phoneNumber;
-    const response = await auth().signInWithPhoneNumber(phone);
-    setConfirmData(response);
-    console.log(response);
-    alert('OTP is sent Please Verify it.');
+    // const phone = '+91' + phoneNumber;
+    // const response = await auth().signInWithPhoneNumber(phone);
+    // setConfirmData(response);
+    // console.log(response);
+    //<TextInput value={code} onChangeText={text => setCode(text)} />
+    //Alert.alert('OTP is sent Please Verify it.');
+    //confirmCode()
+    //signInWithPhoneNumber('+91 853-200-9954')
     navigation.navigate('VerifyOTP');
 
     } else if (IsOffline) {
@@ -370,6 +374,23 @@ const SignInScreen = () => {
     navigation.navigate('SignUp');
   };
 
+  // const signInWithPhoneNumber= async (phoneNumber)  => {
+  //   const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+  //   setConfirm(confirmation);
+  // }
+  // const confirmCode= async() => {
+  //   try {
+  //     await confirm.confirm(code);
+  //   } catch (error) {
+  //     console.log('Invalid code.');
+  //   }
+  // }
+  // if (!confirm) {
+  //   return (
+  //     console.log('Tomorrow')
+  //     //signInWithPhoneNumber('+91 853-200-9954')
+  //   );
+  // }
   return (
 
     <View style={styles.container}>

@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const SupportScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+      {/* <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Icon name="ios-arrow-back" color="black" size={30} />
         <Text style={styles.backButtonText}>Back</Text>
       </TouchableOpacity>
@@ -29,8 +29,9 @@ const SupportScreen = ({ navigation }) => {
           <Hyperlink linkDefault={true}>
             <Text style={styles.emailLink}>khushboo_m@nrsc.gov.in</Text>
           </Hyperlink>
-        </View>
-      </View>
+        </View> */}
+      {/* </View> */}
+      <Text>Support Screen</Text>
     </View>
   );
 };

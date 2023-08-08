@@ -8,10 +8,12 @@ import {
   Keyboard,
   Animated,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const VerifyOTPScreen = () => {
   const inputRefs = Array(6).fill(0).map((_, index) => useRef(null));
   const [otp, setOTP] = useState('');
+  const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const scaleValue = useRef(new Animated.Value(0)).current;
 
@@ -27,11 +29,13 @@ const VerifyOTPScreen = () => {
 
   const handleVerify = async () => {
     try {
+      Keyboard.dismiss();
       setIsLoading(true);
       // Simulate verification API call with a delay
       await new Promise((resolve) => setTimeout(resolve, 2000));
       setIsLoading(false);
-      Keyboard.dismiss();
+      
+      navigation.navigate('Parent');
       // Implement your verification logic here using the 'otp' state.
       // For example, you can send the OTP to the server for verification.
     } catch (err) {

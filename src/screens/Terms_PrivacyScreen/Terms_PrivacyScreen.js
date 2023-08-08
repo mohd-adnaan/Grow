@@ -13,7 +13,7 @@ const Terms_PrivacyScreen = ({ navigation }) => {
         </TouchableOpacity>
         <Text style={styles.sectionTitle}>Terms of Use</Text>
         <Text style={styles.body}>
-          By using the DAC app, you agree to the following terms and conditions:
+          By using the Grow app, you agree to the following terms and conditions:
         </Text>
         <View style={styles.list}>
           <Text style={styles.listItem}>
@@ -26,29 +26,29 @@ const Terms_PrivacyScreen = ({ navigation }) => {
             <Icon name="ios-checkmark-circle-outline" size={12} color="gray" /> You agree not to interfere with the operation of the app or the servers that host the app.
           </Text>
           <Text style={styles.listItem}>
-            <Icon name="ios-checkmark-circle-outline" size={12} color="gray" /> You agree to indemnify and hold harmless the developers of the DAC app from any and all
+            <Icon name="ios-checkmark-circle-outline" size={12} color="gray" /> You agree to indemnify and hold harmless the developers of the Grow app from any and all
             claims arising from your use of the app.
           </Text>
         </View>
         <View style={styles.separator} />
         <Text style={styles.sectionTitle}>Privacy Policy</Text>
         <Text style={styles.body}>
-          The DAC app collects and stores certain data about your use of the app, such as your
+          The Grow app collects and stores certain data about your use of the app, such as your
           location, the time and date of your use, and the pages you visit.
         </Text>
         <View style={styles.list}>
           <Text style={styles.listItem}>
-            <Icon name="ios-checkmark-circle-outline" size={12} color="gray" /> The DAC app uses this data to improve the app and to provide you with personalized content.
+            <Icon name="ios-checkmark-circle-outline" size={12} color="gray" /> The Grow app uses this data to improve the app and to provide you with personalized content.
           </Text>
           <Text style={styles.listItem}>
             <Icon name="ios-checkmark-circle-outline" size={12} color="gray" /> You can opt-out of data collection by disabling location services on your device.
           </Text>
           <Text style={styles.listItem}>
-            <Icon name="ios-checkmark-circle-outline" size={12} color="gray" /> The DAC app does not share your data with any third parties.
+            <Icon name="ios-checkmark-circle-outline" size={12} color="gray" /> The Grow app does not share your data with any third parties.
           </Text>
         </View>
         <Text style={styles.agree}>
-          By using the DAC app, you agree to the terms and conditions set forth above.
+          By using the Grow app, you agree to the terms and conditions set forth above.
         </Text>
       </View>
     </ScrollView>

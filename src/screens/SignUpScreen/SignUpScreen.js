@@ -10,6 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as Animatable from 'react-native-animatable';
 import { Platform } from 'react-native';
 import Logo from '../../../assets/Images/plantlogo.png';
+import LogoName from '../../../assets/Images/logoName.png';
 
 
 const SignUpScreen = () => {
@@ -248,7 +249,7 @@ const SignUpScreen = () => {
 
   return (
     <Animatable.View animation="fadeInUp" style={styles.container}>
-      <Image source={Logo} style={styles.logo} />
+      <Image source={LogoName} style={styles.logo} />
       <LinearGradient colors={['#E4EAF7', '#ffffff']} style={styles.linearGradient}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.container}>

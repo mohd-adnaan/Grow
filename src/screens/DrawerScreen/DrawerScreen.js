@@ -1,4 +1,3 @@
-
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -11,6 +10,7 @@ import SignOutScreen from '../SignOutScreen/SignOutScreen';
 import UserScreen from '../UserScreen/UserScreen';
 const Drawer = createDrawerNavigator();
 import Logo from '../../../assets/Images/plantlogo.png';
+import LogoName from "../../../assets/Images/logoName.png";
 import Terms_PrivacyScreen from '../Terms_PrivacyScreen/Terms_PrivacyScreen';
 
 const styles = StyleSheet.create({
@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
-
 const CustomDrawerContent = (props) => {
   const navigation = useNavigation();
 
@@ -63,23 +62,20 @@ const CustomDrawerContent = (props) => {
   return (
     <DrawerContentScrollView {...props}>
       <View style={{ alignItems: 'center', marginVertical: 20 }}>
-        <Image source={Logo} style={{ width: 130, height: 40 }} />
+        <Image source={LogoName} style={{ width: 140, height: 40 }} />
       </View>
-
       {renderDrawerItem('person-outline', 'User', () => navigation.navigate('User'))}
       {renderDrawerItem('information-circle-outline', 'Support', handleSupportPress)}
       {renderDrawerItem('help-circle-outline', 'About', () => navigation.navigate('About'))}
       {renderDrawerItem('document-outline', 'Terms & Conditions', () => navigation.navigate('Terms&Conditions'))}
       {renderDrawerItem('log-out-outline', 'Sign Out', () => navigation.navigate('SignOut'))}
-
-
       <View style={styles.footer}>
         <Image
           source={require('../../../assets/Images/plantlogo.png')}
           style={styles.footerImage}
           resizeMode="contain"
         />
-        <Text style={styles.footerText}>Design and Developed by NRSC, ISRO</Text>
+        <Text style={styles.footerText}>Design and Developed by A&A</Text>
       </View>
     </DrawerContentScrollView>
   );
@@ -94,17 +90,17 @@ const DrawerScreen = () => {
         options={{
           headerShown: true,
           headerStyle: {
-            backgroundColor: '#9AC5F4',
+            backgroundColor: '#C3EDC0',
           },
           headerTitleAlign: 'center',
-          headerTitle: () => <Image source={Logo} style={{ width: 130, height: 40 }} />,
+          headerTitle: () => <Image source={LogoName} style={{ width: 140, height: 40 }} />,
           headerRight: () => null,
         }}
       />
       <Drawer.Screen name="User" component={UserScreen} options={{ headerShown: false }} />
       <Drawer.Screen name="Support" component={SupportScreen} options={{ headerShown: false }} />
       <Drawer.Screen name="About" component={AboutScreen} options={{ headerShown: false }} />
-      <Drawer.Screen name="Terms&Conditions" component={Terms_PrivacyScreen} options={{ headerShown: false }} />
+      <Drawer.Screen name="Terms&Conditions" component={Terms_PrivacyScreen} options={{ headerShown:false }} />
       <Drawer.Screen name="SignOut" component={SignOutScreen} options={{ headerShown: false }} />
     </Drawer.Navigator>
 
