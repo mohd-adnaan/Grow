@@ -9,7 +9,7 @@ const RegistrationSuccessAnimation = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.navigate('SignIn');
+      navigation.navigate('Parent');
     }, 2000);
 
     return () => clearTimeout(timer);

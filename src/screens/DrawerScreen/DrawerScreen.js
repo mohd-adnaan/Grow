@@ -8,6 +8,7 @@ import AboutScreen from '../AboutScreen/AboutScreen';
 import MainScreen from '../MainScreen/MainScreen';
 import SignOutScreen from '../SignOutScreen/SignOutScreen';
 import UserScreen from '../UserScreen/UserScreen';
+import HomeScreen from '../HomeScreen/HomeScreen';
 const Drawer = createDrawerNavigator();
 import Logo from '../../../assets/Images/plantlogo.png';
 import LogoName from "../../../assets/Images/logoName.png";
@@ -69,6 +70,7 @@ const CustomDrawerContent = (props) => {
       {renderDrawerItem('help-circle-outline', 'About', () => navigation.navigate('About'))}
       {renderDrawerItem('document-outline', 'Terms & Conditions', () => navigation.navigate('Terms&Conditions'))}
       {renderDrawerItem('log-out-outline', 'Sign Out', () => navigation.navigate('SignOut'))}
+      {renderDrawerItem('person','HomeScreen',()=>navigation.navigate('HomeScreen'))}
       <View style={styles.footer}>
         <Image
           source={require('../../../assets/Images/plantlogo.png')}
@@ -102,6 +104,7 @@ const DrawerScreen = () => {
       <Drawer.Screen name="About" component={AboutScreen} options={{ headerShown: false }} />
       <Drawer.Screen name="Terms&Conditions" component={Terms_PrivacyScreen} options={{ headerShown:false }} />
       <Drawer.Screen name="SignOut" component={SignOutScreen} options={{ headerShown: false }} />
+      <Drawer.Screen name="HomeScreen" component={HomeScreen} option={{headerShown:false}}/>
     </Drawer.Navigator>
 
     

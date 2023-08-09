@@ -362,6 +362,7 @@ const SignInScreen = () => {
     //Alert.alert('OTP is sent Please Verify it.');
     //confirmCode()
     //signInWithPhoneNumber('+91 853-200-9954')
+    //navigation.navigate('Parent');
     navigation.navigate('VerifyOTP');
 
     } else if (IsOffline) {
@@ -432,7 +433,7 @@ const SignInScreen = () => {
 
 
         <CustomButton
-          text={'Request OTP'}
+          text={'Sign In'}
           onPress={onSendOTPPressed}
           style={styles.signInButton}
           textStyle={styles.signInButtonText}
