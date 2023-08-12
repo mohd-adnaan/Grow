@@ -362,8 +362,8 @@ const SignInScreen = () => {
     //Alert.alert('OTP is sent Please Verify it.');
     //confirmCode()
     //signInWithPhoneNumber('+91 853-200-9954')
-    //navigation.navigate('Parent');
-    navigation.navigate('VerifyOTP');
+    navigation.navigate('Parent');
+    
 
     } else if (IsOffline) {
       alert('Please check your internet connection');
