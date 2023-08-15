@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const SupportScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      {/* <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Icon name="ios-arrow-back" color="black" size={30} />
         <Text style={styles.backButtonText}>Back</Text>
       </TouchableOpacity>
@@ -15,23 +15,22 @@ const SupportScreen = ({ navigation }) => {
       </View>
       <View style={styles.description}>
         <Text style={styles.descriptionText}>
-          An app to get the Digital Address Code (DAC) of the current and marked location on the Indian Map.
+        A gardening recommendation system can be a valuable tool for gardening enthusiasts, especially for those who are new to gardening or seeking expert advice on cultivating specific plants. The system can provide personalized recommendations and guidance based on factors such as the user's location, climate, soil type, gardening experience, and preferences.
         </Text>
         <Text style={styles.contacts}>For any technical support, contact:</Text>
-        <Text style={styles.contactPerson}>Khushboo Mirza</Text>
-        <Text style={styles.contactPerson}>Scientist/Engineer</Text>
-        <Text style={styles.contactPerson}>Regional Remote Sensing Centre - North</Text>
-        <Text style={styles.contactPerson}>National Remote Sensing Centre</Text>
-        <Text style={styles.contactPerson}>Indian Space Research Organization (ISRO)</Text>
-        <Text style={styles.contactPerson}>Department of Space, Government of India, New Delhi</Text>
+        <Text style={styles.contactPerson}>Mohammad Adnaan</Text>
+        <Text style={styles.contactPerson}>Pre-final year Computer Engineering Student</Text>
+        <Text style={styles.contactPerson}>Zakir Hussain College of Engineering and Technology</Text>
+        <Text style={styles.contactPerson}>Aligarh Muslim University(AMU)</Text>
+
+
         <View style={styles.emailContainer}>
           <Text style={styles.emailLabel}>Email:</Text>
           <Hyperlink linkDefault={true}>
-            <Text style={styles.emailLink}>khushboo_m@nrsc.gov.in</Text>
+            <Text style={styles.emailLink}>iamadnaanmohd21gmail.com</Text>
           </Hyperlink>
-        </View> */}
-      {/* </View> */}
-      <Text>Support Screen</Text>
+        </View> 
+       </View>
     </View>
   );
 };
@@ -40,7 +39,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#F4F7FC',
+    backgroundColor: '#C3EDC0',
     paddingTop: 50,
   },
   backButton: {

@@ -281,6 +281,7 @@ import { AuthContext } from '../../components/context';
 import RNRestart from 'react-native-restart';
 import LinearGradient from 'react-native-linear-gradient';
 import { ActivityIndicator } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 const SignInScreen = () => {
   // let url = "http://192.168.1.54/integrate/login.php"
@@ -292,6 +293,7 @@ const SignInScreen = () => {
   const [IsOffline, setIsOffline] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [confirm,setConfirm] = useState(false);
+  
   useEffect(() => {
     const removeNetInfoSubscription = NetInfo.addEventListener((state) => {
       const offline = !(state.isConnected && state.isInternetReachable);
@@ -302,58 +304,49 @@ const SignInScreen = () => {
     return () => removeNetInfoSubscription();
   }, []);
 
-  const requestOptions = {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ phoneNumber: phoneNumber })
-  };
-
+  
   const login = async () => {
     try {
-      fetch(
-        "http://10.2.20.38/Integrate/login.php", requestOptions, 100)
-        .then((response) => response.json())
-        .then(async response => {
-          console.log("Message: ", response.Message);
-          if (response.status == "Success") {
-            await AsyncStorage.setItem("IsLoggedIn", JSON.stringify(true));
-            await AsyncStorage.setItem("name", response.name);
-            await AsyncStorage.setItem("phoneNumber", response.phone);
-            await AsyncStorage.setItem("designation", response.designation);
-            await AsyncStorage.setItem("department", response.department);
-            await AsyncStorage.setItem("address", response.address);
-            await AsyncStorage.setItem("state", response.state);
-            await AsyncStorage.setItem("pinCode", response.pin);
-
-            setPhoneNumber('');
-            setIsLoading(false);
-            //RNRestart.Restart();
-            navigation.navigate('Parent');
-
-          } else {
-            alert(response.Message);
-            setIsLoading(false);
-            setPhoneNumber('');
-          }
-        })
-        .catch((error) => {
-          alert(error);
-          console.log(error);
-          setIsLoading(false);
-          setPhoneNumber('');
-        });
+      const userDataSnapshot = await firestore()
+        .collection('UsersData')
+        .where('phoneNumber', '==', phoneNumber)
+        .where('name', '==', username)
+        .get();
+  
+      if (!userDataSnapshot.empty) {
+        const userData = userDataSnapshot.docs[0].data();
+  
+        // Save user data in AsyncStorage or state
+        await AsyncStorage.setItem('IsLoggedIn', JSON.stringify(true));
+        await AsyncStorage.setItem('name', userData.name);
+        await AsyncStorage.setItem('phoneNumber', userData.phoneNumber);
+        await AsyncStorage.setItem('designation', userData.designation);
+        await AsyncStorage.setItem('gender', userData.gender);
+        await AsyncStorage.setItem('age', userData.age);
+        await AsyncStorage.setItem('address', userData.address);
+        await AsyncStorage.setItem('state', userData.state);
+        await AsyncStorage.setItem('pin', userData.pinCode);
+  
+        setPhoneNumber('');
+        setIsLoading(false);
+        navigation.navigate('Parent');
+      } else {
+        //alert('User not found');
+        setIsLoading(false);
+        setPhoneNumber('');
+      }
     } catch (error) {
-      alert("error", error);
+      alert(error.message);
+      setIsLoading(false);
     }
   };
+  
+  
 
   const onSendOTPPressed = async () => {
     if (phoneNumber.length === 10 && !IsOffline) {
       //setIsLoading(true);
-    //  login();
+    login();
     // const phone = '+91' + phoneNumber;
     // const response = await auth().signInWithPhoneNumber(phone);
     // setConfirmData(response);
@@ -375,23 +368,6 @@ const SignInScreen = () => {
     navigation.navigate('SignUp');
   };
 
-  // const signInWithPhoneNumber= async (phoneNumber)  => {
-  //   const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-  //   setConfirm(confirmation);
-  // }
-  // const confirmCode= async() => {
-  //   try {
-  //     await confirm.confirm(code);
-  //   } catch (error) {
-  //     console.log('Invalid code.');
-  //   }
-  // }
-  // if (!confirm) {
-  //   return (
-  //     console.log('Tomorrow')
-  //     //signInWithPhoneNumber('+91 853-200-9954')
-  //   );
-  // }
   return (
 
     <View style={styles.container}>
