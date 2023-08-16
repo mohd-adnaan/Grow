@@ -25,6 +25,7 @@ const Navigation = () => {
       <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="SignIn" component={SignInScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
+        <Stack.Screen name= "HomeScreen" component = {HomeScreen}/>
         <Stack.Screen name="Main" component={MainScreen} />
         <Stack.Screen name="Parent" component={ParentScreen} />
         <Stack.Screen name="Support" component={SupportScreen} />
@@ -36,7 +37,7 @@ const Navigation = () => {
         <Stack.Screen name = "RegisterSuccess" component ={RegisterSuccessAnimation} />
         <Stack.Screen name= "DataScreen" component ={DataScreen}/>
         <Stack.Screen name= "VerifyOTP" component = {VerifyOTP}/>
-        <Stack.Screen name= "HomeScreen" component = {HomeScreen}/>
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

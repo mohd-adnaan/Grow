@@ -65,12 +65,12 @@ const CustomDrawerContent = (props) => {
       <View style={{ alignItems: 'center', marginVertical: 20 }}>
         <Image source={LogoName} style={{ width: 140, height: 40 }} />
       </View>
+      {renderDrawerItem('person','HomeScreen',()=>navigation.navigate('HomeScreen'))}
       {renderDrawerItem('person-outline', 'User', () => navigation.navigate('User'))}
       {renderDrawerItem('information-circle-outline', 'Support', handleSupportPress)}
       {renderDrawerItem('help-circle-outline', 'About', () => navigation.navigate('About'))}
       {renderDrawerItem('document-outline', 'Terms & Conditions', () => navigation.navigate('Terms&Conditions'))}
       {renderDrawerItem('log-out-outline', 'Sign Out', () => navigation.navigate('SignOut'))}
-      {renderDrawerItem('person','HomeScreen',()=>navigation.navigate('HomeScreen'))}
       <View style={styles.footer}>
         <Image
           source={require('../../../assets/Images/plantlogo.png')}

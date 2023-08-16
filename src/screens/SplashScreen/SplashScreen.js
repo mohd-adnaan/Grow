@@ -54,7 +54,7 @@ const SplashScreen = ({ navigation }) => {
                         >
                             <Text style={styles.textSign}>Get Started</Text>
                             <MaterialIcons
-                                name="navigate-next"
+                                name="launch"
                                 color="#fff"
                                 size={20}
                             />
