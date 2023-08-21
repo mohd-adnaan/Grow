@@ -8,7 +8,7 @@ const Terms_PrivacyScreen = ({ navigation }) => {
     <ScrollView>
       <View style={styles.container}>
         <TouchableOpacity style={styles.header} onPress={() => navigation.goBack()}>
-          <Icon name="ios-arrow-back" color="black" size={30} />
+          <Icon name="arrow-back" color="black" size={30} />
           <Text style={styles.headerText}>Terms and Privacy</Text>
         </TouchableOpacity>
         <Text style={styles.sectionTitle}>Terms of Use</Text>
@@ -17,16 +17,16 @@ const Terms_PrivacyScreen = ({ navigation }) => {
         </Text>
         <View style={styles.list}>
           <Text style={styles.listItem}>
-            <Icon name="ios-checkmark-circle-outline" size={12} color="gray" /> You are solely responsible for your use of the app and for any consequences of such use.
+            <Icon name="checkmark-circle-outline" size={12} color="gray" /> You are solely responsible for your use of the app and for any consequences of such use.
           </Text>
           <Text style={styles.listItem}>
-            <Icon name="ios-checkmark-circle-outline" size={12} color="gray" /> You agree not to use the app for any illegal or unauthorized purposes.
+            <Icon name="checkmark-circle-outline" size={12} color="gray" /> You agree not to use the app for any illegal or unauthorized purposes.
           </Text>
           <Text style={styles.listItem}>
-            <Icon name="ios-checkmark-circle-outline" size={12} color="gray" /> You agree not to interfere with the operation of the app or the servers that host the app.
+            <Icon name="checkmark-circle-outline" size={12} color="gray" /> You agree not to interfere with the operation of the app or the servers that host the app.
           </Text>
           <Text style={styles.listItem}>
-            <Icon name="ios-checkmark-circle-outline" size={12} color="gray" /> You agree to indemnify and hold harmless the developers of the Grow app from any and all
+            <Icon name="checkmark-circle-outline" size={12} color="gray" /> You agree to indemnify and hold harmless the developers of the Grow app from any and all
             claims arising from your use of the app.
           </Text>
         </View>
@@ -38,13 +38,13 @@ const Terms_PrivacyScreen = ({ navigation }) => {
         </Text>
         <View style={styles.list}>
           <Text style={styles.listItem}>
-            <Icon name="ios-checkmark-circle-outline" size={12} color="gray" /> The Grow app uses this data to improve the app and to provide you with personalized content.
+            <Icon name="checkmark-circle-outline" size={12} color="gray" /> The Grow app uses this data to improve the app and to provide you with personalized content.
           </Text>
           <Text style={styles.listItem}>
-            <Icon name="ios-checkmark-circle-outline" size={12} color="gray" /> You can opt-out of data collection by disabling location services on your device.
+            <Icon name="checkmark-circle-outline" size={12} color="gray" /> You can opt-out of data collection by disabling location services on your device.
           </Text>
           <Text style={styles.listItem}>
-            <Icon name="ios-checkmark-circle-outline" size={12} color="gray" /> The Grow app does not share your data with any third parties.
+            <Icon name="checkmark-circle-outline" size={12} color="gray" /> The Grow app does not share your data with any third parties.
           </Text>
         </View>
         <Text style={styles.agree}>

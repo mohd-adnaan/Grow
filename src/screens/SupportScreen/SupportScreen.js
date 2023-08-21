@@ -7,7 +7,7 @@ const SupportScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Icon name="ios-arrow-back" color="black" size={30} />
+        <Icon name="arrow-back" color="black" size={30} />
         <Text style={styles.backButtonText}>Back</Text>
       </TouchableOpacity>
       <View style={styles.header}>

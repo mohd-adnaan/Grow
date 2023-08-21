@@ -40,14 +40,13 @@ const SignUpScreen = () => {
   const addressRegex = /^[\w\s,/&-]*$/;
   const stateRegex = /^[\w\s,/&-]{3,50}$/;
   const pinRegex = /^[0-9]{6}$/;
+
   useEffect(() => {
     const removeNetInfoSubscription = NetInfo.addEventListener((state) => {
       const offline = !(state.isConnected && state.isInternetReachable);
       console.log("offline:", offline)
       setIsOffline(offline);
     });
-
-
     return () => removeNetInfoSubscription();
   }, []);
 
@@ -150,7 +149,8 @@ const SignUpScreen = () => {
       // Show OTP module when Phone Number is valid
       
       register();
-      setShowOtpModule(true);
+      //setShowOtpModule(true);
+      navigation.navigate('RegisterSuccess')
       return;
     }
 
@@ -444,3 +444,5 @@ const styles = StyleSheet.create({
 });
 
 export default SignUpScreen;
+
+

@@ -483,14 +483,14 @@ const MainScreen = () => {
       )}
 
       <TouchableOpacity style={styles.optionIconContainer} onPress={handleOptionPress}>
-        <Icon name="ios-pin" size={28} color="#333" />
+        <Icon name="pin" size={28} color="#333" />
       </TouchableOpacity>
 
       <Modal visible={showModal} transparent={true} onRequestClose={closeModal}>
         <View style={styles.modalContainer}>
           <View style={styles.modalBox}>
             <TouchableOpacity style={styles.closeIconContainer3} onPress={closeModal}>
-              <Icon name="ios-close-circle" color="gray" size={30} />
+              <Icon name="close-circle" color="gray" size={30} />
             </TouchableOpacity>
             <View style={styles.modalContent}>
               <TouchableOpacity
@@ -564,7 +564,7 @@ const MainScreen = () => {
           </Animated.View>
         </View>
         <TouchableOpacity style={styles.down} onPress={toggleFooter}>
-          <Icon name={footerVisible ? 'ios-arrow-down' : 'ios-arrow-up'} size={40} color="black" />
+          <Icon name={footerVisible ? 'arrow-down' : 'arrow-up'} size={40} color="black" />
         </TouchableOpacity>
       </View>
 
@@ -596,7 +596,7 @@ const MainScreen = () => {
             }}
           >
             <Image
-              source={require('../../../assets/Images/default.png')}
+              source={require('../../../assets/Images/esri.png')}
               style={styles.dialogImage}
             />
             <Text style={styles.buttonText}>OSM</Text>

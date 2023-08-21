@@ -10,7 +10,7 @@ const AboutScreen = ({ navigation }) => {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <Icon
-            name="ios-arrow-back"
+            name="arrow-back"
             color="gray"
             size={30}
             onPress={() => navigation.goBack()}

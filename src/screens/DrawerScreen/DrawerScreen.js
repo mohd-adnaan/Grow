@@ -65,7 +65,7 @@ const CustomDrawerContent = (props) => {
       <View style={{ alignItems: 'center', marginVertical: 20 }}>
         <Image source={LogoName} style={{ width: 140, height: 40 }} />
       </View>
-      {renderDrawerItem('person','HomeScreen',()=>navigation.navigate('HomeScreen'))}
+      {renderDrawerItem('bag-remove-sharp','HomeScreen',()=>navigation.navigate('HomeScreen'))}
       {renderDrawerItem('person-outline', 'User', () => navigation.navigate('User'))}
       {renderDrawerItem('information-circle-outline', 'Support', handleSupportPress)}
       {renderDrawerItem('help-circle-outline', 'About', () => navigation.navigate('About'))}

@@ -238,7 +238,7 @@ const UserScreen = () => {
       </TouchableOpacity>
       <View style={styles.profileContainer}>
         <View style={styles.avatarContainer}>
-          <IconButton name="account-circle" size={100} color="#9AC5F4" />
+        <MaterialIcons name="account-circle" size={100} color="#9AC5F4" />
         </View>
         <Text style={styles.name}>{name}</Text>
       </View>
