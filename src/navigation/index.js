@@ -7,6 +7,7 @@ import SignUpScreen from '../screens/SignUpScreen';
 import SplashScreen from '../screens/SplashScreen';
 import SupportScreen from '../screens/SupportScreen';
 import MainScreen from "../screens/MainScreen/MainScreen";
+import MainScreen2 from "../screens/MainScreen2/MainScreen2"
 import DrawerScreen from "../screens/DrawerScreen"; 
 import ParentScreen from "../screens/ParentScreen";
 import AboutScreen from '../screens/AboutScreen';
@@ -17,6 +18,7 @@ import RegisterSuccessAnimation from "../screens/RegistrationSuccessAnimation/Re
 import DataScreen from '../screens/DataScreen/DataScreen';
 import VerifyOTP from '../screens/VerifyOTPScreen/VerifyOTPScreen';
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
+
 const Stack = createNativeStackNavigator();
 const Navigation = () => {
   return (
@@ -27,6 +29,7 @@ const Navigation = () => {
         <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name= "HomeScreen" component = {HomeScreen}/>
         <Stack.Screen name="Main" component={MainScreen} />
+        <Stack.Screen name="Main2" component={MainScreen2}/>
         <Stack.Screen name="Parent" component={ParentScreen} />
         <Stack.Screen name="Support" component={SupportScreen} />
         <Stack.Screen name="Drawer" component={DrawerScreen} />

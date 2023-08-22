@@ -292,8 +292,8 @@ const SignInScreen = () => {
   const navigation = useNavigation();
   const [IsOffline, setIsOffline] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [confirm,setConfirm] = useState(false);
-  
+  const [confirm, setConfirm] = useState(false);
+
   useEffect(() => {
     const removeNetInfoSubscription = NetInfo.addEventListener((state) => {
       const offline = !(state.isConnected && state.isInternetReachable);
@@ -304,7 +304,7 @@ const SignInScreen = () => {
     return () => removeNetInfoSubscription();
   }, []);
 
-  
+
   const login = async () => {
     try {
       const userDataSnapshot = await firestore()
@@ -312,10 +312,10 @@ const SignInScreen = () => {
         .where('phoneNumber', '==', phoneNumber)
         .where('name', '==', username)
         .get();
-  
+
       if (!userDataSnapshot.empty) {
         const userData = userDataSnapshot.docs[0].data();
-  
+
         // Save user data in AsyncStorage or state
         await AsyncStorage.setItem('IsLoggedIn', JSON.stringify(true));
         await AsyncStorage.setItem('name', userData.name);
@@ -326,7 +326,7 @@ const SignInScreen = () => {
         await AsyncStorage.setItem('address', userData.address);
         await AsyncStorage.setItem('state', userData.state);
         await AsyncStorage.setItem('pin', userData.pinCode);
-  
+
         setPhoneNumber('');
         setIsLoading(false);
         navigation.navigate('Parent');
@@ -340,23 +340,23 @@ const SignInScreen = () => {
       setIsLoading(false);
     }
   };
-  
-  
+
+
 
   const onSendOTPPressed = async () => {
     if (phoneNumber.length === 10 && !IsOffline) {
       //setIsLoading(true);
-    login();
-    // const phone = '+91' + phoneNumber;
-    // const response = await auth().signInWithPhoneNumber(phone);
-    // setConfirmData(response);
-    // console.log(response);
-    //<TextInput value={code} onChangeText={text => setCode(text)} />
-    //Alert.alert('OTP is sent Please Verify it.');
-    //confirmCode()
-    //signInWithPhoneNumber('+91 853-200-9954')
-    navigation.navigate('Parent');
-    
+      login();
+      // const phone = '+91' + phoneNumber;
+      // const response = await auth().signInWithPhoneNumber(phone);
+      // setConfirmData(response);
+      // console.log(response);
+      //<TextInput value={code} onChangeText={text => setCode(text)} />
+      //Alert.alert('OTP is sent Please Verify it.');
+      //confirmCode()
+      //signInWithPhoneNumber('+91 853-200-9954')
+      navigation.navigate('Parent');
+
 
     } else if (IsOffline) {
       alert('Please check your internet connection');
@@ -379,18 +379,18 @@ const SignInScreen = () => {
         /> */}
         <Image
           source={Logo}
-          style={[styles.logo, { height: height * 0.3 }]}
+          style={[styles.logo, { height: height * 0.25 }]}
         //resizeMode="contain"
         />
-        
+
         <TextInput
-  name="username"
-  placeholder="User Name"
-  value={username}
-  onChangeText={text => 
-  setUsername(text)} 
-  style={{ ...styles.input, backgroundColor: 'white' }}
-/>
+          name="username"
+          placeholder="User Name"
+          value={username}
+          onChangeText={text =>
+            setUsername(text)}
+          style={{ ...styles.input, backgroundColor: 'white' }}
+        />
 
         <TextInput
           name="phoneNumber"

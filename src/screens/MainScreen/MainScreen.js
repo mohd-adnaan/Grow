@@ -83,7 +83,7 @@ const MainScreen = () => {
   const [footerPosition, setFooterPosition] = useState(new Animated.Value(0));
   const [footerVisible, setFooterVisible] = useState(true);
   const [showTooltip, setShowTooltip] = useState(false);
-  const [showTooltipJamalpur, setShowTooltipJamalpur] = useState(false);
+
   const [tip1, setTip1] = useState(false);
   const [DACdataInvalid, setDACdataInvalid] = useState(false);
   const [markNewLocation, setMarkNewLocation] = useState(false);
@@ -306,11 +306,16 @@ const MainScreen = () => {
     }, 2000);
 
   };
+  const handleUseCurrentLocation = () => {
+    closeModal();
+    navigation.navigate('Main2');
+  }
   const handleUpdateMarkedLocation = () => {
     closeModal();
     setMapping(true);
     setSelectedLocations([]);
     setTip1(true);
+    setUserLocation(null);
     // setFooterVisible(prevState => !prevState);
     // setFooterText('LongPress on map to update marked location');
     // setTimeout(() => {
@@ -336,6 +341,7 @@ const MainScreen = () => {
     setPolygonCoordinates([]);
     setDrawPolygonCoordinates([]);
     setSaveAndSend(false);
+    setUserLocation(null);
     // region = {
     //   latitude: 28.6139,
     //   longitude: 77.209,
@@ -374,11 +380,7 @@ const MainScreen = () => {
       }, 3000);
     }
   }, [selectedLocations]);
-  useEffect(() => {
-    setTimeout(() => {
-      setShowTooltipJamalpur(true);
-    }, 3000);
-  }, []);
+ 
   useEffect(() => {
     setTimeout(() => {
       setMarkNewLocation(true);
@@ -458,16 +460,16 @@ const MainScreen = () => {
           {userLocation && (
             <Marker
               coordinate={userLocation}
-              pinColor={markerColor}
+              pinColor={getRandomColor}
             />
           )}
           {selectedCoordinate && markedLocation && (
-            <Marker coordinate={selectedCoordinate} pinColor={markerColor} />
+            <Marker coordinate={selectedCoordinate} pinColor={getRandomColor} />
           )}
           {selectedCoordinate && (
-            <Marker coordinate={selectedCoordinate} pinColor={markerColor}>
+            <Marker coordinate={selectedCoordinate} pinColor={getRandomColor}>
               <Callout>
-                <Text>Selected location: {selectedCoordinate.latitude.toFixed(4)}° N, {selectedCoordinate.longitude.toFixed(4)}° E</Text>
+                <Text>Selected location: {selectedCoordinate.latitude.toFixed(4)}°N, {selectedCoordinate.longitude.toFixed(4)}°E</Text>
               </Callout>
             </Marker>
           )}
@@ -546,20 +548,34 @@ const MainScreen = () => {
         <View style={styles.locationContainer}>
           <Animated.View style={[styles.footerContent, { transform: [{ translateY: footerPosition }] }]}>
             <Text style={styles.markedLocationText}>
-              Current Location: {mLat !== null ? mLat.toFixed(4) : 28.6139}° N,{' '}
-              {mLong !== null ? mLong.toFixed(4) : 77.209}° E
+              Current Location: {mLat !== null ? mLat.toFixed(4) : 28.6139}°N,{' '}
+              {mLong !== null ? mLong.toFixed(4) : 77.209}°E
             </Text>
             {selectedLocations.length > 0 && (
               <>
                 <View style={styles.line} />
                 <Text style={styles.markedLocationText}>
-                  Marked Location: {selectedLocations[selectedLocations.length - 1].latitude.toFixed(4)}° N,{' '}
+                  Marked Location: {selectedLocations[selectedLocations.length - 1].latitude.toFixed(3)}°N,{' '}
                   {selectedLocations[selectedLocations.length - 1].longitude.toFixed(4)}° E
                 </Text>
               </>
             )}
             <View style={styles.line} />
-
+            <View >
+            <TouchableOpacity
+                style={styles.modalButton}
+                onPress={handleUseCurrentLocation}
+              >
+                <Text style={styles.modalButtonText}>Use Current location</Text>
+              </TouchableOpacity>
+              <View style={styles.line} />
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={handleUpdateMarkedLocation}
+              >
+                <Text style={styles.modalButtonText}>Mark a new location</Text>
+              </TouchableOpacity>
+            </View>
             <Text style={[styles.footerText, styles.designText]}>GPS Accuracy: 700 meters</Text>
           </Animated.View>
         </View>
@@ -591,7 +607,7 @@ const MainScreen = () => {
             style={[styles.mapOptionButton, selectedMapOption === 'bhuvan' && styles.selectedMapOptionButton]}
             onPress={() => {
               setLayer('bhuvan');
-              setSelectedMapOption('bhuvan'); // Update the selected map option
+              setSelectedMapOption('bhuvan'); 
               setShowMapOptions(false);
             }}
           >
@@ -714,6 +730,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end', // Align the icon to the right-hand side
   },
   footerContent: {
+
     backgroundColor: '#fff',
     paddingHorizontal: 20,
     paddingVertical: 12,
@@ -1004,7 +1021,7 @@ const styles = StyleSheet.create({
   },
   modalButton: {
     alignSelf: 'stretch',
-    backgroundColor: '#007bff',
+    backgroundColor: '#C3EDC0',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 5,
@@ -1077,16 +1094,7 @@ const styles = StyleSheet.create({
     padding: 4,
     borderRadius: 4,
   },
-  gotoJamalpurIcon: {
-    position: 'absolute',
-    top: 250,
-    right: 12,
-    marginLeft: 10,
-    backgroundColor: '#fff',
-    backgroundColor: '#FFFFFF',
-    padding: 4,
-    borderRadius: 4,
-  },
+ 
   DACPopupContainer: {
     flex: 1,
     justifyContent: 'center',

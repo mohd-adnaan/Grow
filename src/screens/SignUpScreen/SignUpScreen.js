@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert, TextInput, ActivityIndicator, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert, TextInput, ActivityIndicator, Image ,TouchableOpacity} from 'react-native';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import { useNavigation } from '@react-navigation/native';
@@ -13,8 +13,8 @@ import Logo from '../../../assets/Images/plantlogo.png';
 import LogoName from '../../../assets/Images/logoName.png';
 import firestore from '@react-native-firebase/firestore';
 import database from '@react-native-firebase/database';
-
-const SignUpScreen = () => {
+import Icon from 'react-native-vector-icons/Ionicons';
+const SignUpScreen = ({navigation}) => {
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [gender, setGender] = useState('');
@@ -24,7 +24,7 @@ const SignUpScreen = () => {
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [pin, setPinCode] = useState('');
-  const navigation = useNavigation();
+  //const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false)
   const [isRegisterSuccess, setIsRegisterSuccess] = useState(false)
   //let url = global.server_url + "register.php";
@@ -199,6 +199,9 @@ const SignUpScreen = () => {
   return (
 
     <Animatable.View animation="fadeInUp" style={styles.container}>
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.closeIconContainer}>
+        <Icon name="arrow-back" color="gray" size={50} />
+      </TouchableOpacity>
       <Image source={LogoName} style={styles.logo} />
       <LinearGradient colors={['#E4EAF7', '#ffffff']} style={styles.linearGradient}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -440,6 +443,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
+  },
+  backButtonText: {
+    fontSize: 16,
+    color: 'black',
+  },
+  closeIconContainer: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    zIndex: 2, 
   },
 });
 

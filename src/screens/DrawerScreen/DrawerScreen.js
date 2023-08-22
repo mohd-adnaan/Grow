@@ -65,7 +65,7 @@ const CustomDrawerContent = (props) => {
       <View style={{ alignItems: 'center', marginVertical: 20 }}>
         <Image source={LogoName} style={{ width: 140, height: 40 }} />
       </View>
-      {renderDrawerItem('bag-remove-sharp','HomeScreen',()=>navigation.navigate('HomeScreen'))}
+      {renderDrawerItem('bag-remove-sharp','Identify Plant',()=>navigation.navigate('HomeScreen'))}
       {renderDrawerItem('person-outline', 'User', () => navigation.navigate('User'))}
       {renderDrawerItem('information-circle-outline', 'Support', handleSupportPress)}
       {renderDrawerItem('help-circle-outline', 'About', () => navigation.navigate('About'))}
@@ -106,8 +106,6 @@ const DrawerScreen = () => {
       <Drawer.Screen name="SignOut" component={SignOutScreen} options={{ headerShown: false }} />
       <Drawer.Screen name="HomeScreen" component={HomeScreen} option={{headerShown:false}}/>
     </Drawer.Navigator>
-
-    
   );
 };
 
