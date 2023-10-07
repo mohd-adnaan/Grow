@@ -20,8 +20,9 @@ import VerifyOTP from '../screens/VerifyOTPScreen/VerifyOTPScreen';
 import IdentifyPlant from '../screens/IdentifyPlant/IdentifyPlant';
 import WeatherScreen from '../screens/WeatherScreen/WeatherScreen';
 import BottomNavigator from '../screens/BottomNavigator/BottomNavigator';
-import LandingPage from '../screens/LandingPage/LandingPage';
+import ParentChildRelation from '../screens/ParentChildRelation/ParentChildRelation';
 import ChangeLocation from '../screens/ChangeLocation/ChangeLocation';
+import SelectPlantType from '../screens/SelectPlantType';
 
 
 const Stack = createNativeStackNavigator();
@@ -48,7 +49,8 @@ const Navigation = () => {
         <Stack.Screen name="Weather" component={WeatherScreen} />
         <Stack.Screen name="Bottom" component={BottomNavigator} />
         <Stack.Screen name="IdentifyPlant" component={IdentifyPlant} />
-        <Stack.Screen name="LandingPage" component={LandingPage} />
+        <Stack.Screen name="ParentChild" component={ParentChildRelation} />
+        <Stack.Screen name="SelectPlantType" component={SelectPlantType}/>
         </Stack.Navigator>
     </NavigationContainer>
   );

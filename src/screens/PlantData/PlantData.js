@@ -23,7 +23,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
  import img17 from '../../../assets/flower/img17.jpeg';
  import img18 from '../../../assets/flower/img18.jpeg';
  import img19 from '../../../assets/flower/img19.jpeg';
- 
 import img20 from '../../../assets/flower/1_LawsoniaAlba.jpeg';
 import img21 from '../../../assets/flower/2_NyctanthesArbortristis.jpeg';
 import img22 from '../../../assets/flower/3_ThevetiaNeriifolia.jpeg';
@@ -101,7 +100,7 @@ import img38 from '../../../assets/flower/4_CapparisSpinosa.jpeg';
            >
              <View style={styles.imageContainer}>
                <Image source={image} style={styles.image} />
-               <Text style={styles.imageName}>Mehndi or Henna</Text>
+               {/* <Text style={styles.imageName}> </Text> */}
              </View>
            </TouchableOpacity>
          ))}
@@ -118,7 +117,7 @@ import img38 from '../../../assets/flower/4_CapparisSpinosa.jpeg';
      backgroundColor: '#fff',
    },
    scrollView: {
-     padding: 20,
+     padding: 15,
    },
    imageContainer: {
      marginBottom: 20,
@@ -127,7 +126,7 @@ import img38 from '../../../assets/flower/4_CapparisSpinosa.jpeg';
    },
    image: {
      width: '100%',
-     height: 200, 
+     height: 250, 
      resizeMode: 'cover',
    },
    imageName: {

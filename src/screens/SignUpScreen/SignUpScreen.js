@@ -150,7 +150,7 @@ const SignUpScreen = ({navigation}) => {
       
       register();
       //setShowOtpModule(true);
-      navigation.navigate('RegisterSuccess')
+      navigation.navigate('VerifyOTP')
       return;
     }
 

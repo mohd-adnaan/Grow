@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import SupportScreen from '../SupportScreen/SupportScreen';
 import AboutScreen from '../AboutScreen/AboutScreen';
-import LandingPage from '../LandingPage/LandingPage';
+import LandingPage from '../ParentChildRelation/ParentChildRelation';
 import SignOutScreen from '../SignOutScreen/SignOutScreen';
 import UserScreen from '../UserScreen/UserScreen';
 import Logo from '../../../assets/Images/plantlogo.png';

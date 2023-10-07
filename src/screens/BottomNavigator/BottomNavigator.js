@@ -6,9 +6,7 @@ import IdentifyPlant from '../IdentifyPlant/IdentifyPlant';
 import WeatherScreen from '../WeatherScreen/WeatherScreen';
 import ChangeLocation from '../ChangeLocation/ChangeLocation';
 import { View, Text, StyleSheet } from 'react-native';
-
 const Bottom = createBottomTabNavigator();
-
 const BottomNavigator = () => {
   return (
     <Bottom.Navigator
@@ -17,29 +15,32 @@ const BottomNavigator = () => {
           let iconName;
 
           if (route.name === 'PlantData') {
-            iconName = focused ?'flower' : 'flower-outline';
+            iconName = focused ? 'flower' : 'flower-outline';
           } else if (route.name === 'IdentifyPlant') {
-            // iconName = focused ? 'list' : 'list';
             iconName = focused ? 'search' : 'search-outline';
           } else if (route.name === 'Weather') {
             iconName = focused ? 'cloudy' : 'cloudy-outline';
-          } else if (route.name === 'ChangeLocation'){
-            iconName = focused ? 'location' : 'location-outline'; 
+          } else if (route.name === 'ChangeLocation') {
+            iconName = focused ? 'location' : 'location-outline';
           }
-
           return <Icon name={iconName} size={size} color={color} />;
         },
+        tabBarActiveTintColor: 'blue',
+        tabBarInactiveTintColor: 'gray',
+        tabBarLabelStyle: {
+          fontSize: 12,
+        },
+        tabBarStyle: [
+          {
+            display: 'flex',
+          },
+          null,
+        ],
       })}
-      tabBarOptions={{
-        activeTintColor: 'blue',
-        inactiveTintColor: 'gray', 
-        style: styles.tabBar,
-        labelStyle: styles.tabLabel,
-      }}
     >
       <Bottom.Screen name="PlantData" component={PlantData} options={{ headerShown: false }} />
       <Bottom.Screen name="IdentifyPlant" component={IdentifyPlant} options={{ headerShown: false }} />
-      <Bottom.Screen name="ChangeLocation" component={ChangeLocation} option={{ headerShown: false }}/>
+      <Bottom.Screen name="ChangeLocation" component={ChangeLocation} options={{ headerShown: false }} />
       <Bottom.Screen name="Weather" component={WeatherScreen} options={{ headerShown: false }} />
     </Bottom.Navigator>
   );
@@ -47,7 +48,8 @@ const BottomNavigator = () => {
 
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: 'white', 
+    backgroundColor: 'white',
+    height: 90,
   },
   tabLabel: {
     fontSize: 12,

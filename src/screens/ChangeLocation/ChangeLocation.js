@@ -87,7 +87,6 @@ const ChangeLocation = () => {
   const [tip1, setTip1] = useState(false);
   const [DACdataInvalid, setDACdataInvalid] = useState(false);
   const [markNewLocation, setMarkNewLocation] = useState(false);
-  const [SaveAndSend, setSaveAndSend] = useState(false);
 
   const logoName = require("../../../assets/Images/logoName.png");
 
@@ -96,9 +95,9 @@ const ChangeLocation = () => {
     getUserLocation();
   }, []);
 
-  useEffect(() => {
-    requestPermission();
-  }, []);
+  // useEffect(() => {
+  //   requestPermission();
+  // }, []);
 
   const getUserLocation = () => {
     Geolocation.getCurrentPosition(
@@ -134,59 +133,6 @@ const ChangeLocation = () => {
       console.warn(err);
     }
   };
-
-  const requestPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-        {
-          title: 'Permission Request',
-          message: 'This app needs permission to access your photos.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('Photos permission granted');
-      } else {
-        console.log('Photos permission denied');
-      }
-    } catch (error) {
-      console.log('Error requesting photos permission:', error);
-    }
-  };
-
-  const saveToDevice = async () => {
-    try {
-      const permission = await PermissionsAndroid.check(
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-      );
-
-      if (!permission) {
-        await requestStoragePermission();
-        return;
-      }
-
-      const filePath = `${RNFS.PicturesDirectoryPath}/screenshot.png`;
-      await RNFS.copyFile(imageUri, filePath);
-      console.log('Screenshot saved to:', filePath);
-      Alert.alert('Screenshot saved to:', filePath);
-    } catch (error) {
-      console.log('Error saving screenshot:', error);
-    }
-  };
-
-  const getShare = () => {
-    const options = {
-      url: imageUri,
-      message: 'Captured Screenshot in DAC App'
-    };
-    Share.open(options);
-    console.log('getShare');
-  }
-
 
   const getRandomColor = () => {
     const colors = ['#4285F4'];// '#34A853', '#FBBC05', '#EA4335',
@@ -228,42 +174,91 @@ const ChangeLocation = () => {
       setShowMarkedLocationModal(true);
     }
   };
+  // const handleMapPress = event => {
+  //       const { latitude, longitude } = event.nativeEvent.coordinate;
+  //       const fetchData = async () => {
+  //         try {
+  //           const response = await fetch(
+  //             `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?types=district&access_token=pk.eyJ1IjoiYWRuYWFuMDcwOSIsImEiOiJjbGo3azM4aDQwazlrM2ZxcHBvaHR4azBhIn0.y10hp3ht1p4vtHiS2_DdBw`
+  //           );
+      
+  //           const data = await response.json();
+  //           const features = data.features;
+  //           console.log(features)
+  //           if (features.length > 0) {
+  //             const district = features[0].text;
+  //             const state = features[1].text; 
+      
+  //             // Set the footer text with district and state names
+  //             console.log('State:', state);
+  //             console.log('District:', district);
+  //             setFooterText(`District: ${district}, State: ${state}`);
+  //           } else {
+  //             setFooterText('District and State not found');
+  //           }
+  //         } catch (error) {
+  //           console.error('Error fetching district and state:', error);
+  //           setFooterText('Error fetching district and state');
+  //         }
+  //       };
+      
+  //       fetchData();
+  //       const markerColor = getRandomColor();
+  //       setSelectedLocations(prevLocations => [
+  //         ...prevLocations,
+  //         { latitude, longitude, color: markerColor },
+  //       ]);
+
+  //       setMarkers(prevMarkers => [
+  //         ...prevMarkers,
+  //         { latitude, longitude, color: markerColor },
+  //       ]);
+  //     };
+
   const handleMapPress = event => {
-    if (isDrawingEnabled) {
-      if (mapping && markers.length < 16) {
-        const { latitude, longitude } = event.nativeEvent.coordinate;
-        const markerColor = getRandomColor();
-        setSelectedLocations(prevLocations => [
-          ...prevLocations,
-          { latitude, longitude, color: markerColor },
-        ]);
-        setMarkers(prevMarkers => [
-          ...prevMarkers,
-          { latitude, longitude, color: markerColor },
-        ]);
-        saveLocationToBackend(latitude, longitude);
-        fetchDataAndDisplayOnMap();
-      } else if (mapping && markers.length === 16) {
-        Alert.alert(
-          'Maximum Positions Reached',
-          'You have marked the maximum allowed positions (16).',
+    const { latitude, longitude } = event.nativeEvent.coordinate;
+  
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?types=district&access_token=pk.eyJ1IjoiYWRuYWFuMDcwOSIsImEiOiJjbGo3azM4aDQwazlrM2ZxcHBvaHR4azBhIn0.y10hp3ht1p4vtHiS2_DdBw`
         );
+  
+        const data = await response.json();
+        const features = data.features;
+        console.log(features)
+  
+        if (features.length > 0) {
+          const district = features[0].text;
+          const state =  features[1].text;
+  
+          // Set the footer text with district and state names
+          console.log('State:', state);
+          console.log('District:', district);
+          setFooterText(`District: ${district}, State: ${state}`);
+        } else {
+          setFooterText('District and State not found');
+        }
+      } catch (error) {
+        console.error('Error fetching district and state:', error);
+        setFooterText('Error fetching district and state');
       }
-    } else {
-      setSelectedLocations([]);
-      if (mapping) {
-        const { latitude, longitude } = event.nativeEvent.coordinate;
-        const markerColor = getRandomColor();
-        setSelectedLocations(prevLocations => [
-          ...prevLocations,
-          { latitude, longitude, color: markerColor },
-        ]);
-        setDAC(true);
-        setPolygonMarkers([]);
-        setDACdataInvalid(false);
-      }
-    }
+    };
+  
+    fetchData();
+  
+    const markerColor = getRandomColor();
+    setSelectedLocations(prevLocations => [
+      ...prevLocations,
+      { latitude, longitude, color: markerColor },
+    ]);
+  
+    setMarkers(prevMarkers => [
+      ...prevMarkers,
+      { latitude, longitude, color: markerColor },
+    ]);
   };
+  
 
   const handleSupportPress = () => {
     navigation.navigate('Support');
@@ -273,11 +268,6 @@ const ChangeLocation = () => {
     setShowMapOptions(true);
   };
 
-
-  const handleBackPress = () => {
-    setShowAlert(true);
-    return true;
-  };
   const closePreview = () => {
     setIsPreviewVisible(false);
     setShowMapOptions(false);
@@ -310,7 +300,7 @@ const ChangeLocation = () => {
   };
   const handleUseCurrentLocation = () => {
     closeModal();
-    navigation.navigate('Main2');
+    navigation.navigate('SelectPlantType');
   }
   const handleUpdateMarkedLocation = () => {
     closeModal();
@@ -318,11 +308,6 @@ const ChangeLocation = () => {
     setSelectedLocations([]);
     setTip1(true);
     setUserLocation(null);
-    // setFooterVisible(prevState => !prevState);
-    // setFooterText('LongPress on map to update marked location');
-    // setTimeout(() => {
-    //   setFooterText('');
-    // }, 2000);
     if (markedLocation) {
       setBoundaryMarkers(prevMarkers => [...prevMarkers, markedLocation]);
       setMarkedLocation(null);
@@ -342,24 +327,12 @@ const ChangeLocation = () => {
     setSelectedLocations([]);
     setPolygonCoordinates([]);
     setDrawPolygonCoordinates([]);
-    setSaveAndSend(false);
+
     setUserLocation(null);
-    // region = {
-    //   latitude: 28.6139,
-    //   longitude: 77.209,
-    //   latitudeDelta: 20,
-    //   longitudeDelta: 30,
-    // }
-    // mapViewRef.current.animateToRegion(region, 2000);
-    // setFooterVisible(prevState => !prevState);
+
     setTip1(false)
 
   };
-
-
-
-
-
   const toggleFooter = () => {
     setFooterVisible(prevState => !prevState);
   };
@@ -389,16 +362,9 @@ const ChangeLocation = () => {
     }, 3000);
   }, []);
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
-    };
-  }, []);
   const newColor = getRandomColor();
   const ref = useRef();
   return (
-
     <View style={styles.container}>
       <View style={styles.mapContainer}>
 
@@ -513,26 +479,6 @@ const ChangeLocation = () => {
         </View>
       </Modal>
 
-
-
-
-      <Modal visible={isPreviewVisible} onRequestClose={closePreview}>
-        <View style={styles.previewContainer}>
-          {imageUri && <Image source={{ uri: imageUri }} style={styles.previewImage} />}
-          <View style={styles.buttonContainer3}>
-            <TouchableOpacity style={styles.button3} onPress={saveToDevice}>
-              <Text style={styles.buttonText}><Icon name="download" size={30} color="black" />Save</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button3} onPress={getShare}>
-              <Text style={styles.buttonText}><Icon name="share" size={30} color="black" />Share</Text>
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity style={styles.closeIconContainer} onPress={closePreview}>
-            <Icon name="close" size={40} color="black" />
-          </TouchableOpacity>
-        </View>
-      </Modal>
-
       <TouchableOpacity style={styles.MapResetContainer} onPress={handleMapReset}>
         <Icon name="refresh" size={28} color="#333" />
       </TouchableOpacity>
@@ -541,23 +487,21 @@ const ChangeLocation = () => {
         style={styles.mapOptionsIcon}
         onPress={handleMapOptionsPress}>
         <Icon name="layers" size={30} color="#333" />
-
       </TouchableOpacity>
-
-
 
       <View style={styles.footer}>
         <View style={styles.locationContainer}>
           <Animated.View style={[styles.footerContent, { transform: [{ translateY: footerPosition }] }]}>
             <Text style={styles.markedLocationText}>
-              Current Location: {mLat !== null ? mLat.toFixed(4) : 28.6139}°N,{' '}
+              Current Location:{mLat !== null ? mLat.toFixed(4) : 28.6139}°N,{' '}
               {mLong !== null ? mLong.toFixed(4) : 77.209}°E
             </Text>
             {selectedLocations.length > 0 && (
               <>
                 <View style={styles.line} />
                 <Text style={styles.markedLocationText}>
-                  Marked Location: {selectedLocations[selectedLocations.length - 1].latitude.toFixed(3)}°N,{' '}
+                  Marked Location: {footerText} ,
+                  {selectedLocations[selectedLocations.length - 1].latitude.toFixed(3)}°N,{' '}
                   {selectedLocations[selectedLocations.length - 1].longitude.toFixed(4)}° E
                 </Text>
               </>
@@ -972,34 +916,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#82CD47',
     borderRadius: 8,
   },
-  saveIcon: {
-    marginHorizontal: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    backgroundColor: '#82CD47',
-    borderRadius: 10, // Increased border radius for a more rounded appearance
-    shadowColor: 'rgba(0, 0, 0, 0.1)',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  saveText: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-    textShadowColor: 'rgba(0, 0, 0, 0.2)',
-    textShadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    textShadowRadius: 2,
-  },
   buttonText3: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -1225,5 +1141,3 @@ export default ChangeLocation;
 
 
 
-
-//----------------------------------------------------------------------------------------------------------------------------------------------
