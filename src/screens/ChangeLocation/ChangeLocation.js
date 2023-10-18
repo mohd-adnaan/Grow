@@ -34,14 +34,8 @@ import Geolocation from 'react-native-geolocation-service';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Dialog from 'react-native-dialog';
-import { captureRef } from 'react-native-view-shot';
-import Share from 'react-native-share';
-import RNFS from 'react-native-fs';
-import * as Animatable from 'react-native-animatable';
-import RNPermissions from 'react-native-permissions';
-import shpwrite from 'shp-write';
-import axios from 'axios';
-import polyline from '@mapbox/polyline';
+import { connection, test_input } from '../../utils/database';
+
 
 const ChangeLocation = () => {
   const [mLat, setMLat] = useState(null);
@@ -68,6 +62,7 @@ const ChangeLocation = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [contourCoordinates, setContourCoordinates] = useState([]);
   const [footerText, setFooterText] = useState('');
+  const [footerTextCurrent, setFooterTextCurrent] = useState('');
   const [showDACPopup, setShowDACPopup] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dacValue, setDacValue] = useState('');
@@ -95,9 +90,6 @@ const ChangeLocation = () => {
     getUserLocation();
   }, []);
 
-  // useEffect(() => {
-  //   requestPermission();
-  // }, []);
 
   const getUserLocation = () => {
     Geolocation.getCurrentPosition(
@@ -142,24 +134,103 @@ const ChangeLocation = () => {
 
   const getLocation = () => {
     Geolocation.getCurrentPosition(
-      position => {
+      async position => {
         console.log(position);
-        setMLat(position.coords.latitude);
-        setMLong(position.coords.longitude);
-        setUserLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
+        const { latitude, longitude } = position.coords;
+  
+        try {
+          const response = await fetch(
+            `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?types=place&access_token=pk.eyJ1IjoiYWRuYWFuMDcwOSIsImEiOiJjbGo3azM4aDQwazlrM2ZxcHBvaHR4azBhIn0.y10hp3ht1p4vtHiS2_DdBw`
+          );
+  
+          const data = await response.json();
+  
+          if (data.features.length > 0) {
+            const placeName = data.features[0].place_name;
+            console.log('Place Name:', placeName);
+            setFooterTextCurrent(`${placeName}`);
+            fetchDataFromBackend(placeName);
+          } else {
+            setFooterTextCurrent('Place name not found');
+          }
+        } catch (error) {
+          console.error('Error fetching place name:', error);
+          setFooterCurrent('Error fetching place name');
+        }
+        setMLat(latitude);
+        setMLong(longitude);
+        setUserLocation({ latitude, longitude });
         const newColor = getRandomColor();
         setMarkerColor(newColor);
       },
       error => {
         console.log(error.code, error.message);
       },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
     );
   };
 
+  // const fetchDataFromBackend = async(placeName) => {
+  //   try {
+  //     const requestOptions = {
+  //       method: 'POST',
+  //       headers: {
+  //         'Accept': 'application/json',
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({
+  //         district: placeName,
+  //       })
+  //     };
+  //     const response = await fetch('http://10.2.20.38/Integrate/plantData.php', requestOptions);
+  //     const data = await response.json();
+  //     console.log('Raw Response:', data);
+  //   } catch (error) {
+  //     console.log('Error fetching data:', error);
+  //   }
+  // };
+  
+//   const fetchDataFromBackend = async (placeName) => {
+//     try {
+//         const requestOption = {
+//             method: 'Post',
+//             headers: {
+//                 'Accept': 'application/json',
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify({
+//                 district: placeName,
+//             })
+//         };
+
+//         if (placeName) {
+//             const sanitizedDistrict = test_input(placeName);
+
+//             const sql = `
+//                 SELECT pd.*
+//                 FROM plant_detailed_data pd
+//                 JOIN species_zone_association sza ON pd.scientific_name IN (
+//                     SELECT JSON_UNQUOTE(JSON_EXTRACT(sza.scientificName, CONCAT('$[', numbers.n, ']')))
+//                     FROM (SELECT 0 AS n UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4) numbers
+//                 )
+//                 JOIN district_zone_association dza ON sza.zoneIndex = dza.zone_index
+//                 WHERE dza.district = '${sanitizedDistrict}' and sza.name = 'Shade trees'
+//             `;
+
+//             connection.query(sql, (error, results) => {
+//                 if (error) {
+//                     console.error(`Error: ${error.message}`);
+//                 } else {
+//                     console.log('Query results:', results);
+//                 }
+//             });
+//         } else {
+//             console.error("Invalid 'district' parameter");
+//         }
+//     } catch (error) {
+//         console.error(`Error: ${error.message}`);
+//     }
+// };
 
 
   const handleMapLongPress = event => {
@@ -174,46 +245,6 @@ const ChangeLocation = () => {
       setShowMarkedLocationModal(true);
     }
   };
-  // const handleMapPress = event => {
-  //       const { latitude, longitude } = event.nativeEvent.coordinate;
-  //       const fetchData = async () => {
-  //         try {
-  //           const response = await fetch(
-  //             `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?types=district&access_token=pk.eyJ1IjoiYWRuYWFuMDcwOSIsImEiOiJjbGo3azM4aDQwazlrM2ZxcHBvaHR4azBhIn0.y10hp3ht1p4vtHiS2_DdBw`
-  //           );
-      
-  //           const data = await response.json();
-  //           const features = data.features;
-  //           console.log(features)
-  //           if (features.length > 0) {
-  //             const district = features[0].text;
-  //             const state = features[1].text; 
-      
-  //             // Set the footer text with district and state names
-  //             console.log('State:', state);
-  //             console.log('District:', district);
-  //             setFooterText(`District: ${district}, State: ${state}`);
-  //           } else {
-  //             setFooterText('District and State not found');
-  //           }
-  //         } catch (error) {
-  //           console.error('Error fetching district and state:', error);
-  //           setFooterText('Error fetching district and state');
-  //         }
-  //       };
-      
-  //       fetchData();
-  //       const markerColor = getRandomColor();
-  //       setSelectedLocations(prevLocations => [
-  //         ...prevLocations,
-  //         { latitude, longitude, color: markerColor },
-  //       ]);
-
-  //       setMarkers(prevMarkers => [
-  //         ...prevMarkers,
-  //         { latitude, longitude, color: markerColor },
-  //       ]);
-  //     };
 
   const handleMapPress = event => {
     const { latitude, longitude } = event.nativeEvent.coordinate;
@@ -225,23 +256,14 @@ const ChangeLocation = () => {
         );
   
         const data = await response.json();
-        const features = data.features;
-        console.log(features)
+        const placeName = data.features[0].place_name;
+        console.log('Place Name:', placeName);
   
-        if (features.length > 0) {
-          const district = features[0].text;
-          const state =  features[1].text;
-  
-          // Set the footer text with district and state names
-          console.log('State:', state);
-          console.log('District:', district);
-          setFooterText(`District: ${district}, State: ${state}`);
-        } else {
-          setFooterText('District and State not found');
-        }
+        // Set the footer text with the place name
+        setFooterText(`${placeName}`);
       } catch (error) {
-        console.error('Error fetching district and state:', error);
-        setFooterText('Error fetching district and state');
+        console.error('Error fetching place name:', error);
+        setFooterText('Error fetching place name');
       }
     };
   
@@ -258,6 +280,7 @@ const ChangeLocation = () => {
       { latitude, longitude, color: markerColor },
     ]);
   };
+  
   
 
   const handleSupportPress = () => {
@@ -493,7 +516,8 @@ const ChangeLocation = () => {
         <View style={styles.locationContainer}>
           <Animated.View style={[styles.footerContent, { transform: [{ translateY: footerPosition }] }]}>
             <Text style={styles.markedLocationText}>
-              Current Location:{mLat !== null ? mLat.toFixed(4) : 28.6139}°N,{' '}
+              Current Location:{footerTextCurrent} ,
+              {mLat !== null ? mLat.toFixed(4) : 28.6139}°N,{' '}
               {mLong !== null ? mLong.toFixed(4) : 77.209}°E
             </Text>
             {selectedLocations.length > 0 && (

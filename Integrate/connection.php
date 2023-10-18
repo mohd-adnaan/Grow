@@ -1,13 +1,21 @@
 <?php
-$dbconn = pg_connect("host=localhost dbname=minorProject user=postgres password=mysecretpassword")
-    or die('Could not connect: ' . pg_last_error());
+$servername = "localhost";
+$username = "root";
+$password = "mysql";
+$dbname = "datagrow";
 
-function test_input($data) 
-    {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        
-        return $data;
+// Create connection
+$dbconn = mysqli_connect($servername, $username, $password, $dbname);
+
+// Check connection
+if (!$dbconn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
 }
 ?>
