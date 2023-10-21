@@ -34,7 +34,7 @@ import Geolocation from 'react-native-geolocation-service';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Dialog from 'react-native-dialog';
-import { connection, test_input } from '../../utils/database';
+
 
 
 const ChangeLocation = () => {
@@ -55,7 +55,6 @@ const ChangeLocation = () => {
   const [markedLocation, setMarkedLocation] = useState(null);
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
-
   const [showMarkedLocationModal, setShowMarkedLocationModal] = useState(false);
   const [mapping, setMapping] = useState(false);
   const mapViewRef = useRef(null);
@@ -63,6 +62,8 @@ const ChangeLocation = () => {
   const [contourCoordinates, setContourCoordinates] = useState([]);
   const [footerText, setFooterText] = useState('');
   const [footerTextCurrent, setFooterTextCurrent] = useState('');
+  const [district, setDistrict] = useState('');
+  const [state, setState] = useState('');
   const [showDACPopup, setShowDACPopup] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dacValue, setDacValue] = useState('');
@@ -78,11 +79,10 @@ const ChangeLocation = () => {
   const [footerPosition, setFooterPosition] = useState(new Animated.Value(0));
   const [footerVisible, setFooterVisible] = useState(true);
   const [showTooltip, setShowTooltip] = useState(false);
-
   const [tip1, setTip1] = useState(false);
   const [DACdataInvalid, setDACdataInvalid] = useState(false);
   const [markNewLocation, setMarkNewLocation] = useState(false);
-
+  const axios = require('axios');
   const logoName = require("../../../assets/Images/logoName.png");
 
   useEffect(() => {
@@ -148,8 +148,8 @@ const ChangeLocation = () => {
           if (data.features.length > 0) {
             const placeName = data.features[0].place_name;
             console.log('Place Name:', placeName);
+            
             setFooterTextCurrent(`${placeName}`);
-            fetchDataFromBackend(placeName);
           } else {
             setFooterTextCurrent('Place name not found');
           }
@@ -170,69 +170,6 @@ const ChangeLocation = () => {
     );
   };
 
-  // const fetchDataFromBackend = async(placeName) => {
-  //   try {
-  //     const requestOptions = {
-  //       method: 'POST',
-  //       headers: {
-  //         'Accept': 'application/json',
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify({
-  //         district: placeName,
-  //       })
-  //     };
-  //     const response = await fetch('http://10.2.20.38/Integrate/plantData.php', requestOptions);
-  //     const data = await response.json();
-  //     console.log('Raw Response:', data);
-  //   } catch (error) {
-  //     console.log('Error fetching data:', error);
-  //   }
-  // };
-  
-//   const fetchDataFromBackend = async (placeName) => {
-//     try {
-//         const requestOption = {
-//             method: 'Post',
-//             headers: {
-//                 'Accept': 'application/json',
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({
-//                 district: placeName,
-//             })
-//         };
-
-//         if (placeName) {
-//             const sanitizedDistrict = test_input(placeName);
-
-//             const sql = `
-//                 SELECT pd.*
-//                 FROM plant_detailed_data pd
-//                 JOIN species_zone_association sza ON pd.scientific_name IN (
-//                     SELECT JSON_UNQUOTE(JSON_EXTRACT(sza.scientificName, CONCAT('$[', numbers.n, ']')))
-//                     FROM (SELECT 0 AS n UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4) numbers
-//                 )
-//                 JOIN district_zone_association dza ON sza.zoneIndex = dza.zone_index
-//                 WHERE dza.district = '${sanitizedDistrict}' and sza.name = 'Shade trees'
-//             `;
-
-//             connection.query(sql, (error, results) => {
-//                 if (error) {
-//                     console.error(`Error: ${error.message}`);
-//                 } else {
-//                     console.log('Query results:', results);
-//                 }
-//             });
-//         } else {
-//             console.error("Invalid 'district' parameter");
-//         }
-//     } catch (error) {
-//         console.error(`Error: ${error.message}`);
-//     }
-// };
-
-
   const handleMapLongPress = event => {
     if (mapping) {
       const { latitude, longitude } = event.nativeEvent.coordinate;
@@ -246,6 +183,15 @@ const ChangeLocation = () => {
     }
   };
 
+
+  const handleUseCurrentLocation= () => {
+    closeModal();
+    console.log('Current district:', district);
+    console.log('Current state:', state);
+    //fetchPlantData(district, state);
+    navigation.navigate('SelectPlantType', { district, state });
+  }
+  
   const handleMapPress = event => {
     const { latitude, longitude } = event.nativeEvent.coordinate;
   
@@ -258,7 +204,16 @@ const ChangeLocation = () => {
         const data = await response.json();
         const placeName = data.features[0].place_name;
         console.log('Place Name:', placeName);
-  
+        const placeComponents = placeName.split(', ');
+        const district = placeComponents[placeComponents.length - 3];
+        const state =  placeComponents[placeComponents.length - 2];
+        setDistrict(`${district}`);
+        setState(`${state}`);
+        //console.log('District:', district);
+        //console.log('State:', state);
+
+        //fetchPlantData(district, state);
+        //fetchPlantData('Balrampur', 'Chattisgarh');
         // Set the footer text with the place name
         setFooterText(`${placeName}`);
       } catch (error) {
@@ -281,8 +236,6 @@ const ChangeLocation = () => {
     ]);
   };
   
-  
-
   const handleSupportPress = () => {
     navigation.navigate('Support');
   };
@@ -321,10 +274,7 @@ const ChangeLocation = () => {
     }, 2000);
 
   };
-  const handleUseCurrentLocation = () => {
-    closeModal();
-    navigation.navigate('SelectPlantType');
-  }
+
   const handleUpdateMarkedLocation = () => {
     closeModal();
     setMapping(true);

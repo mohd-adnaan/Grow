@@ -35,27 +35,88 @@ function test_input(data) {
   return data;
 }
 
+var cors = require('cors');
+    app.use(cors());
+
+// app.get('/plant_data_detailed', function (req, res) {
+//   try {
+//     const district = req.query.district;
+//     const state = req.query.state;
+//     console.log('Received district:', district);
+//     console.log('Received state:', state);
+
+//     if (district && state) {
+//       const sql = `
+//       SELECT pd.*
+//       FROM plant_data_detailed pd
+//       JOIN species_zone_association sza ON pd.scientific_name IN (
+//           SELECT JSON_UNQUOTE(JSON_EXTRACT(sza.scientificName, CONCAT('$[', numbers.n, ']')))
+//           FROM (
+//               SELECT 0 AS n
+//               UNION ALL SELECT 1
+//               -- (other UNION ALL SELECTs omitted for brevity)
+//               UNION ALL SELECT 60
+//           ) numbers
+//       )
+//       JOIN district_zone_association dza ON sza.zoneIndex = dza.zone_index
+//       WHERE dza.district = ? AND sza.name = 'Shrubs with fragrant flowers'`;
+      
+//       connection.query(sql, [district, state], (error, results) => {
+//         if (error) {
+//           console.error(`Error: ${error.message}`);
+//           res.status(500).send('Internal Server Error');
+//         } else {
+//           console.log('Query results:', results);
+//           res.json(results);
+//         }
+//       });
+//     } else {
+//       console.error("Invalid 'district' or 'state' parameter");
+//       res.status(400).send('Bad Request');
+//     }
+//   } catch (error) {
+//     console.error(`Error: ${error.message}`);
+//     res.status(500).send('Internal Server Error');
+//   }
+// });
+
 app.get('/plant_data_detailed', function (req, res) {
   try {
-    const placeName = 'Balrampur, Chattisgarh';// req.query.district;
-    if (1) { // put placename condition here
-      // const sanitizedDistrict = test_input(placeName);
+    const district = req.query.district;
+    const state = req.query.state;
+    const name = req.query.name; // Add this line to get the 'name' parameter
 
-      const sql = 'SELECT pd.* FROM plant_data_detailed pd';
-      //const sql = 'SELECT pd.*'
-      //console.log(sql);
-      connection.query(sql, (error, results) => {
+    console.log('Received district:', district);
+    console.log('Received state:', state);
+    console.log('Received name:', name); // Log the received name for verification
+
+    if (district && state && name) { // Check if all parameters are provided
+      const sql = `
+      SELECT pd.*
+      FROM plant_data_detailed pd
+      JOIN species_zone_association sza ON pd.scientific_name IN (
+          SELECT JSON_UNQUOTE(JSON_EXTRACT(sza.scientificName, CONCAT('$[', numbers.n, ']')))
+          FROM (
+              SELECT 0 AS n
+              UNION ALL SELECT 1
+              -- (other UNION ALL SELECTs omitted for brevity)
+              UNION ALL SELECT 60
+          ) numbers
+      )
+      JOIN district_zone_association dza ON sza.zoneIndex = dza.zone_index
+      WHERE dza.district = ? AND sza.name = ?`; // Use a placeholder for the name parameter
+      
+      connection.query(sql, [district, name], (error, results) => { // Pass the 'name' parameter
         if (error) {
           console.error(`Error: ${error.message}`);
           res.status(500).send('Internal Server Error');
         } else {
           console.log('Query results:', results);
           res.json(results);
-          console.log(results);
         }
       });
     } else {
-      console.error("Invalid 'district' parameter");
+      console.error("Invalid 'district', 'state', or 'name' parameter"); // Add 'name' to the error message
       res.status(400).send('Bad Request');
     }
   } catch (error) {

@@ -23,7 +23,7 @@ import BottomNavigator from '../screens/BottomNavigator/BottomNavigator';
 import ParentChildRelation from '../screens/ParentChildRelation/ParentChildRelation';
 import ChangeLocation from '../screens/ChangeLocation/ChangeLocation';
 import SelectPlantType from '../screens/SelectPlantType';
-
+import PlantDetails from '../screens/PlantDetails';
 
 const Stack = createNativeStackNavigator();
 const Navigation = () => {
@@ -51,6 +51,7 @@ const Navigation = () => {
         <Stack.Screen name="IdentifyPlant" component={IdentifyPlant} />
         <Stack.Screen name="ParentChild" component={ParentChildRelation} />
         <Stack.Screen name="SelectPlantType" component={SelectPlantType}/>
+        <Stack.Screen name="PlantDetails" component={PlantDetails}/>
         </Stack.Navigator>
     </NavigationContainer>
   );
