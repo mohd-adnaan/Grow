@@ -99,7 +99,7 @@
 // export default SelectPlantType;
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -113,12 +113,12 @@ const SelectPlantType = () => {
     try {
       console.log('Passed district:', district);
       console.log('Passed state:', state);
-      const response = await fetch(`http://192.168.200.161:3000/plant_data_detailed?district=${district}&state=${state}&name=${name}`, {
+      const response = await fetch(`http://10.11.40.43:3000/plant_data_detailed?district=${district}&state=${state}&name=${name}`, {
        method: 'get',
       });
       const data = await response.json();
       console.log('Plant Data:', data);
-      navigation.navigate('PlantDetails',{ data });
+      navigation.navigate('PlantDetails',{data});
     } catch (error) {
       console.error('Error:', error);
     }
@@ -148,23 +148,26 @@ const SelectPlantType = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Icon name="arrow-left" color="black" size={30} />
+          <Icon name="arrow-left" color="black" size={30} />
         </TouchableOpacity>
         <Text style={styles.headerText}>Select Plant Type</Text>
       </View>
-
-      {itemList.map((item, index) => (
-        <TouchableOpacity
-          key={index}
-          style={[styles.itemButton, selectedItem === item.name && styles.selectedItem]}
-          onPress={() => handleItemClick(item.name)}
-        >
-          <Icon name={item.icon} size={30} color="black" />
-          <Text style={styles.itemText}>{item.name}</Text>
-        </TouchableOpacity>
-      ))}
+      
+      <View style={styles.itemsContainer}>
+        {itemList.map((item, index) => (
+          <TouchableOpacity
+            key={index}
+            style={[styles.itemButton, selectedItem === item.name && styles.selectedItem]}
+            onPress={() => handleItemClick(item.name)}
+          >
+            <Icon name={item.icon} size={30} color="black" />
+            <Text style={styles.itemText}>{item.name}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
     </View>
   );
+  
 };
 
 const styles = {
@@ -172,6 +175,11 @@ const styles = {
     flex: 1,
     padding: 16,
     backgroundColor: '#F8F8F8',
+  },
+  itemsContainer: {
+    flex: 1, 
+    justifyContent: 'center', 
+
   },
   header: {
     flexDirection: 'row',
@@ -188,10 +196,10 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#E1F1E1',
-    paddingVertical: 10,
+    paddingVertical: 18,
     paddingHorizontal: 20,
-    marginBottom: 10,
-    borderRadius: 10,
+    marginBottom: 12,
+    borderRadius: 12,
   },
   selectedItem: {
     backgroundColor: '#77CC77',

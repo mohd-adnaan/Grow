@@ -234,11 +234,11 @@ const UserScreen = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.closeIconContainer}>
-        <Icon name="arrow-back" color="gray" size={30} />
+        <Icon name="arrow-back" color="black" size={30} />
       </TouchableOpacity>
       <View style={styles.profileContainer}>
         <View style={styles.avatarContainer}>
-        <MaterialIcons name="account-circle" size={100} color="#9AC5F4" />
+        <MaterialIcons name="account-circle" size={100} color="#77CC77" />
         </View>
         <Text style={styles.name}>{name}</Text>
       </View>
@@ -260,7 +260,7 @@ const UserScreen = () => {
 const InfoItem = ({ icon, label }) => {
   return (
     <View style={styles.infoItem}>
-      <MaterialIcons name={icon} size={35} color="#9AC5F4" />
+      <MaterialIcons name={icon} size={35} color="#77CC77" />
       <Text style={styles.infoText}>{label}</Text>
     </View>
   );
@@ -269,7 +269,7 @@ const InfoItem = ({ icon, label }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F4F7FC',
+    backgroundColor: '#77CC77',
   },
   profileContainer: {
     flex: 1,
@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
     zIndex: 2, 
   },
   logoutButton: {
-    backgroundColor: '#1E88E5',
+    backgroundColor: '#77CC77',
     width: '80%',
     alignSelf: 'center',
     height: 50,

@@ -11,7 +11,7 @@ const AboutScreen = ({ navigation }) => {
         <View style={styles.header}>
           <Icon
             name="arrow-back"
-            color="gray"
+            color="black"
             size={30}
             onPress={() => navigation.goBack()}
           />
@@ -44,7 +44,7 @@ const AboutScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#BFAABB',//#E4EAF7'
+    backgroundColor: '#77CC77',//#E4EAF7'
   },
   scrollContent: {
     flexGrow: 1,
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     fontSize: 16,
-    color: '#000',
+    color: 'black',
     textAlign: 'justify',
     marginBottom: 10,
   },

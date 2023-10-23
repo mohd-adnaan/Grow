@@ -47,7 +47,7 @@ const CustomDrawerContent = (props) => {
           style={styles.footerImage}
           resizeMode="contain"
         />
-        <Text style={styles.footerText}>Design and Developed by A&A</Text>
+        <Text style={styles.footerText}>Design and Developed by Adnaan</Text>
       </View>
     </DrawerContentScrollView>
   );

@@ -49,7 +49,7 @@ const SplashScreen = ({ navigation }) => {
                 <View style={styles.button}>
                     <TouchableOpacity onPress={handleGetStarted}>
                         <LinearGradient
-                            colors={['#C3EDC0', '#BFAABB']} // Plant-inspired gradient colors
+                            colors={['#C3EDC0', '#77CC77']} // Plant-inspired gradient colors
                             style={styles.signIn}
                         >
                             <Text style={styles.textSign}>Get Started</Text>
@@ -67,7 +67,7 @@ const SplashScreen = ({ navigation }) => {
                         style={styles.footerImage}
                         resizeMode="contain"
                     />
-                    <Text style={styles.footerText}>Design and Developed by A&A</Text>
+                    <Text style={styles.footerText}>Design and Developed by Adnaan</Text>
                 </View>
             </Animatable.View>
         </View>

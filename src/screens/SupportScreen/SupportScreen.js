@@ -18,7 +18,7 @@ const SupportScreen = ({ navigation }) => {
         A gardening recommendation system can be a valuable tool for gardening enthusiasts, especially for those who are new to gardening or seeking expert advice on cultivating specific plants. The system can provide personalized recommendations and guidance based on factors such as the user's location, climate, soil type, gardening experience, and preferences.
         </Text>
         <Text style={styles.contacts}>For any technical support, contact:</Text>
-        <Text style={styles.contactPerson}>Mohammad Adnaan</Text>
+        <Text style={styles.contacts}>Mohammad Adnaan</Text>
         <Text style={styles.contactPerson}>Pre-final year Computer Engineering Student</Text>
         <Text style={styles.contactPerson}>Zakir Hussain College of Engineering and Technology</Text>
         <Text style={styles.contactPerson}>Aligarh Muslim University(AMU)</Text>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   contactPerson: {
     fontSize: 16,
-    color: '#000',
+    color: 'black',
     marginBottom: 5,
   },
   emailContainer: {
