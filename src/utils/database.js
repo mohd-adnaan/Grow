@@ -104,9 +104,9 @@ app.get('/plant_data_detailed', function (req, res) {
           ) numbers
       )
       JOIN district_zone_association dza ON sza.zoneIndex = dza.zone_index
-      WHERE dza.district = ? AND sza.name = ?`; // Use a placeholder for the name parameter
+      WHERE dza.district = ? AND sza.name = ?`; 
       
-      connection.query(sql, [district, name], (error, results) => { // Pass the 'name' parameter
+      connection.query(sql, [district, name], (error, results) => { 
         if (error) {
           console.error(`Error: ${error.message}`);
           res.status(500).send('Internal Server Error');
@@ -116,7 +116,7 @@ app.get('/plant_data_detailed', function (req, res) {
         }
       });
     } else {
-      console.error("Invalid 'district', 'state', or 'name' parameter"); // Add 'name' to the error message
+      console.error("Invalid 'district', 'state', or 'name' parameter"); 
       res.status(400).send('Bad Request');
     }
   } catch (error) {

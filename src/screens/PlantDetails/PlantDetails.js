@@ -1,49 +1,57 @@
-import React, { useEffect } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useRoute, useNavigation } from '@react-navigation/native';  // Import useRoute
-import PlantDetails from '.';
+import { useRoute, useNavigation } from '@react-navigation/native';
+
+import Abies from '../../../assets/plantImages/Abies.jpg';
+
+const images = [Abies];
 
 const PlantDetails = () => {
-  const route = useRoute();  // Use useRoute to get route params
-  const { district, state } = route.params;
-  const navigation = useNavigation(); // Get navigation prop
-
-  const fetchPlantData = async (district, state, name) => {
-    try {
-      console.log('Passed district:', district);
-      console.log('Passed state:', state);
-      const response = await fetch(`http://10.12.200.198:3000/plant_data_detailed?district=${district}&state=${state}&name=${name}`, {
-        method: 'get',
-      });
-      const data = await response.json();
-      console.log('Plant Data:', data);
-    } catch (error) {
-      console.error('Error 404 :// :', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchPlantData(district, state, name);
-  }, [district, state, name]);
+  const route = useRoute();
+  const { data } = route.params;
+  const navigation = useNavigation();
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.container}>
+        <ScrollView style={styles.scrollView}>
+          {images.map((image, index) => (
+            <TouchableOpacity key={index} onPress={() => {}}>
+              <View style={styles.imageContainer}>
+                <Image source={image} style={styles.image} />
+              </View>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Icon name="arrow-back" color="black" size={30} />
         <Text style={styles.backButtonText}>Back</Text>
       </TouchableOpacity>
-    
-    </View>
+
+      <Text style={styles.jsonText}>{JSON.stringify(data, null, 2)}</Text>
+      <Text style={styles.nameText}>{data.name}</Text>
+    </ScrollView>
   );
 };
-
 
 const styles = {
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20,
+  },
+  jsonText: {
+    fontSize: 16,
+    color: 'black',
+    marginBottom: 10,
+  },
+  nameText: {
+    fontSize: 16,
+    color: 'black',
   },
   backButton: {
     position: 'absolute',
@@ -56,10 +64,31 @@ const styles = {
     fontSize: 16,
     color: 'black',
   },
-  title: {
-    fontSize: 24,
+  itemButton: {
+    backgroundColor: '#C3EDC0',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginVertical: 5,
+    borderRadius: 10,
+  },
+  scrollView: {
+    padding: 15,
+  },
+  imageContainer: {
+    marginBottom: 20,
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  image: {
+    width: '100%',
+    height: 250,
+    resizeMode: 'cover',
+  },
+  imageName: {
+    fontSize: 16,
     fontWeight: 'bold',
-    color:'black',
+    marginTop: 10,
+    textAlign: 'center',
   },
 };
 

@@ -142,15 +142,12 @@ const ChangeLocation = () => {
           const response = await fetch(
             `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?types=place&access_token=pk.eyJ1IjoiYWRuYWFuMDcwOSIsImEiOiJjbGo3azM4aDQwazlrM2ZxcHBvaHR4azBhIn0.y10hp3ht1p4vtHiS2_DdBw`
           );
-  
           const data = await response.json();
-  
           if (data.features.length > 0) {
             const placeName = data.features[0].place_name;
             console.log('Place Name:', placeName);
-            
             setFooterTextCurrent(`${placeName}`);
-          } else {
+          }else {
             setFooterTextCurrent('Place name not found');
           }
         } catch (error) {
@@ -182,8 +179,6 @@ const ChangeLocation = () => {
       setShowMarkedLocationModal(true);
     }
   };
-
-
   const handleUseCurrentLocation= () => {
     closeModal();
     console.log('Current district:', district);
