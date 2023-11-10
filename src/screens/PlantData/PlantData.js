@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, Image, TouchableOpacity, FlatList, StyleSheet ,Text} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons';
 
  import img1 from '../../../assets/flower/img1.jpeg';
  import img2 from '../../../assets/flower/img2.jpeg';

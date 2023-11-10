@@ -36,8 +36,6 @@ const VerifyOTPScreen = () => {
       setIsLoading(false);
 
       navigation.navigate('RegisterSuccess');
-      // Implement your verification logic here using the 'otp' state.
-      // For example, you can send the OTP to the server for verification.
     } catch (err) {
       setIsLoading(false);
       console.log(err);

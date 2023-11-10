@@ -32,7 +32,6 @@ const PlantDetails = () => {
           <Text style={styles.dataTextHeading}>Seasonal Tips:<Text style={styles.text}>{plant.seasonal_tips}</Text></Text> 
           <Text style={styles.dataTextHeading}>Soil Type: <Text style={styles.text}>{plant.soil_type}</Text></Text>
           <Text style={styles.dataTextHeading}>Watering Guidelines: <Text style={styles.text}>{plant.watering_guidelines}</Text></Text>
-          {/* Add more details here as needed */}
         </View>
       ))}
     </ScrollView>
