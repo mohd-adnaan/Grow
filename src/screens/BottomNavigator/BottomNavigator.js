@@ -1,10 +1,10 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
-import PlantData from '../PlantData/PlantData'
 import IdentifyPlant from '../IdentifyPlant/IdentifyPlant';
 import WeatherScreen from '../WeatherScreen/WeatherScreen';
 import ChangeLocation from '../ChangeLocation/ChangeLocation';
+import PlantDetails from '../PlantDetails';
 import { View, Text, StyleSheet } from 'react-native';
 const Bottom = createBottomTabNavigator();
 const BottomNavigator = () => {
@@ -14,9 +14,9 @@ const BottomNavigator = () => {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'PlantData') {
-            iconName = focused ? 'flower' : 'flower-outline';
-          } else if (route.name === 'IdentifyPlant') {
+           if (route.name === 'PlantDetails') {
+             iconName = focused ? 'flower' : 'flower-outline';
+           }else if (route.name === 'IdentifyPlant') {
             iconName = focused ? 'search' : 'search-outline';
           } else if (route.name === 'Weather') {
             iconName = focused ? 'cloudy' : 'cloudy-outline';
@@ -38,9 +38,9 @@ const BottomNavigator = () => {
         ],
       })}
     >
-      <Bottom.Screen name="PlantData" component={PlantData} options={{ headerShown: false }} />
-      <Bottom.Screen name="IdentifyPlant" component={IdentifyPlant} options={{ headerShown: false }} />
       <Bottom.Screen name="ChangeLocation" component={ChangeLocation} options={{ headerShown: false }} />
+      {/* <Bottom.Screen name="PlantDetails" component={PlantDetails} options={{ headerShown: false }} /> */}
+      <Bottom.Screen name="IdentifyPlant" component={IdentifyPlant} options={{ headerShown: false }} />
       <Bottom.Screen name="Weather" component={WeatherScreen} options={{ headerShown: false }} />
     </Bottom.Navigator>
   );

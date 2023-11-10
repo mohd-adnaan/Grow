@@ -9,22 +9,6 @@ const SelectPlantType = () => {
   const navigation = useNavigation();
   const [selectedItem, setSelectedItem] = useState(null);
 
-  // const fetchPlantData = async (district, state, name) => {
-  //   try {
-  //     console.log('Passed district:', district);
-  //     console.log('Passed state:', state);
-  //     console.log('Passed name:', name);
-  //     const response = await fetch(`http://192.168.206.161/plant_data_detailed?district=${district}&state=${state}&name=${name}`, {
-  //      method: 'get',
-  //     });
-  //     const data = await response.json();
-  //     console.log('Plant Data:', data);
-  //     navigation.navigate('PlantDetails',{data});
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   }
-  // };
-
   const fetchPlantData = async (district, state, name) => {
     try {
       console.log('Passed district:', district);
@@ -35,7 +19,7 @@ const SelectPlantType = () => {
       const encodedState = encodeURIComponent(state);
       const encodedName = encodeURIComponent(name);
   
-      const response = await fetch(`http://192.168.206.161:3000/plant_data_detailed?district=${encodedDistrict}&state=${encodedState}&name=${encodedName}`, {
+      const response = await fetch(`http://192.168.137.224:3000/plant_data_detailed?district=${encodedDistrict}&state=${encodedState}&name=${encodedName}`, {
         method: 'get',
         headers: {
           'Content-Type': 'application/json',

@@ -185,6 +185,7 @@ const ChangeLocation = () => {
     console.log('Current state:', state);
     //fetchPlantData(district, state);
     navigation.navigate('SelectPlantType', { district, state });
+
   }
   
   const handleMapPress = event => {

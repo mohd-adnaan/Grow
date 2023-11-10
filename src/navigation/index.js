@@ -6,7 +6,6 @@ import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import SplashScreen from '../screens/SplashScreen';
 import SupportScreen from '../screens/SupportScreen';
-import PlantData from "../screens/PlantData/PlantData"
 import DrawerScreen from "../screens/DrawerScreen"; 
 import ParentScreen from "../screens/ParentScreen";
 import ChildScreen from '../screens/ChildScreen/ChildScreen';
@@ -34,7 +33,6 @@ const Navigation = () => {
         <Stack.Screen name="SignIn" component={SignInScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name="ChangeLocation" component={ChangeLocation} />
-        <Stack.Screen name="PlantData" component={PlantData}/>
         <Stack.Screen name="Parent" component={ParentScreen} />
         <Stack.Screen name="Child" component={ChildScreen} />
         <Stack.Screen name="Support" component={SupportScreen} />
