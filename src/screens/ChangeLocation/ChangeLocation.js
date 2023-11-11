@@ -35,8 +35,6 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Dialog from 'react-native-dialog';
 
-
-
 const ChangeLocation = () => {
   const [mLat, setMLat] = useState(null);
   const [mLong, setMLong] = useState(null);
@@ -90,7 +88,6 @@ const ChangeLocation = () => {
     getUserLocation();
   }, []);
 
-
   const getUserLocation = () => {
     Geolocation.getCurrentPosition(
       position => {
@@ -108,8 +105,8 @@ const ChangeLocation = () => {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title: 'DAC ask for Location Permission',
-          message: 'DAC needs access to your Location ',
+          title: 'Grow ask for Location Permission',
+          message: 'Grow needs access to your Location ',
           buttonNeutral: 'Ask Me Later',
           buttonNegative: 'Cancel',
           buttonPositive: 'OK',
@@ -147,6 +144,12 @@ const ChangeLocation = () => {
             const placeName = data.features[0].place_name;
             console.log('Place Name:', placeName);
             setFooterTextCurrent(`${placeName}`);
+            const placeComponents = placeName.split(', ');
+            const district = placeComponents[placeComponents.length - 3];
+            const state =  placeComponents[placeComponents.length - 2];
+            setDistrict(`${district}`);
+            setState(`${state}`);
+            setFooterText(`${placeName}`);
           }else {
             setFooterTextCurrent('Place name not found');
           }
@@ -183,9 +186,7 @@ const ChangeLocation = () => {
     closeModal();
     console.log('Current district:', district);
     console.log('Current state:', state);
-    //fetchPlantData(district, state);
     navigation.navigate('SelectPlantType', { district, state });
-
   }
   
   const handleMapPress = event => {
@@ -196,7 +197,6 @@ const ChangeLocation = () => {
         const response = await fetch(
           `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?types=district&access_token=pk.eyJ1IjoiYWRuYWFuMDcwOSIsImEiOiJjbGo3azM4aDQwazlrM2ZxcHBvaHR4azBhIn0.y10hp3ht1p4vtHiS2_DdBw`
         );
-  
         const data = await response.json();
         const placeName = data.features[0].place_name;
         console.log('Place Name:', placeName);
@@ -205,19 +205,12 @@ const ChangeLocation = () => {
         const state =  placeComponents[placeComponents.length - 2];
         setDistrict(`${district}`);
         setState(`${state}`);
-        //console.log('District:', district);
-        //console.log('State:', state);
-
-        //fetchPlantData(district, state);
-        //fetchPlantData('Balrampur', 'Chattisgarh');
-        // Set the footer text with the place name
         setFooterText(`${placeName}`);
       } catch (error) {
         console.error('Error fetching place name:', error);
         setFooterText('Error fetching place name');
       }
     };
-  
     fetchData();
   
     const markerColor = getRandomColor();
@@ -225,7 +218,6 @@ const ChangeLocation = () => {
       ...prevLocations,
       { latitude, longitude, color: markerColor },
     ]);
-  
     setMarkers(prevMarkers => [
       ...prevMarkers,
       { latitude, longitude, color: markerColor },
@@ -306,7 +298,6 @@ const ChangeLocation = () => {
     setFooterVisible(prevState => !prevState);
   };
   useEffect(() => {
-    // Animate the footer position whenever footerVisible changes
     Animated.timing(footerPosition, {
       toValue: footerVisible ? 0 : windowHeight - 60,
       duration: 200,
@@ -373,8 +364,6 @@ const ChangeLocation = () => {
           )}
           {layer === 'esri' && (
             <UrlTile
-              // urlTemplate={'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'}
-              // urlTemplate = {'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'}
               urlTemplate={'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'}
               zIndex={1}
               epsgSpec={'EPSG:90031'}
@@ -410,13 +399,12 @@ const ChangeLocation = () => {
               </Callout>
             </Marker>
           )}
-         
         </MapView>
 
       </View>
       {loading && (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#007bff" />
+          <ActivityIndicator size="large" color="#C3EDC0" />
           <Text style={styles.loadingText}>Please wait...</Text>
         </View>
       )}

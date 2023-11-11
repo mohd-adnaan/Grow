@@ -24,7 +24,7 @@ const RegistrationSuccessAnimation = () => {
         style={styles.icon}
         name='checkmark-circle-outline'
         type='evilicon'
-        color='#4285F4' // Plant-inspired light green color
+        color='#4285F4'
         size={100}
       />
       <Text style={styles.text}>Registration Successful</Text>
@@ -35,7 +35,7 @@ const RegistrationSuccessAnimation = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#C3EDC0', // Blue color, similar to the Google logo color
+    backgroundColor: '#C3EDC0',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   text: {
-    color: '#4285F4', // Plant-inspired light green color
+    color: '#4285F4',
     fontSize: 22,
     fontWeight: 'bold',
   },

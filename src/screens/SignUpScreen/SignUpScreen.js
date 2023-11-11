@@ -80,7 +80,6 @@ const SignUpScreen = ({navigation}) => {
   const onVerifyOtp = () => {
     if (otp === '123456') {
       setIsOtpVerified(true);
-      //Alert.alert('OTP Verified', 'Your OTP has been successfully verified.');
       navigation.navigate('RegisterSuccess')
     } else {
       Alert.alert('Invalid OTP', 'Please enter a valid OTP.');

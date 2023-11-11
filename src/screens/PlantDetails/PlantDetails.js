@@ -280,7 +280,7 @@ const PlantDetails = () => {
         <View key={index} style={styles.plantContainer}>
           <View style={styles.imageContainer}><Image source={getImageByKey(plant.imageKey)} style={styles.image}/></View>
           <Text style={styles.nameText}>{plant.comm_names.join(', ')}</Text>
-          <Text style={styles.dataTextHeading}>Plant Key: <Text style={styles.text}>{plant.imageKey}</Text></Text>
+          {/* <Text style={styles.dataTextHeading}>Plant Key: <Text style={styles.text}>{plant.imageKey}</Text></Text> */}
           <Text style={styles.dataTextHeading}>Scientific Name: <Text style={styles.text}>{plant.scientific_name}</Text></Text>
           <Text style={styles.dataTextHeading}>Common name: <Text style={styles.text}>{plant.comm_names.join(', ')}</Text></Text>
           <Text style={styles.dataTextHeading}>Description:<Text style={styles.text}>{plant.description}</Text></Text>
@@ -334,7 +334,7 @@ const styles = {
   },
   image: {
     width: '100%',
-    height: 250,
+    height: 300,
     resizeMode: 'cover',
   },
   text: {
@@ -378,3 +378,4 @@ const styles = {
 };
 
 export default PlantDetails;
+

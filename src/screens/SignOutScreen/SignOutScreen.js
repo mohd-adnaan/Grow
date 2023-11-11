@@ -5,7 +5,6 @@ import RNRestart from "react-native-restart";
 const SignOutScreen = () => {
   const navigation = useNavigation();
   return (
-    //navigation.navigate("SignIn")
     RNRestart.Restart()
   );
 };

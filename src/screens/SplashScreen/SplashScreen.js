@@ -20,8 +20,6 @@ const SplashScreen = ({ navigation }) => {
 
     const handleGetStarted = () => {
         navigation.navigate('SignIn');
-       //navigation.navigate('DataScreen');
-      // navigation.navigate('HomeScreen');
     };
 
     return (

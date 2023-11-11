@@ -11,6 +11,10 @@ import UserScreen from '../UserScreen/UserScreen';
 import Logo from '../../../assets/Images/plantlogo.png';
 import LogoName from "../../../assets/Images/logoName.png";
 import Terms_PrivacyScreen from '../Terms_PrivacyScreen/Terms_PrivacyScreen';
+import Search from "../../../assets/Images/search.png";
+import Animated, { useSharedValue, withTiming, Easing } from 'react-native-reanimated';
+import * as Animatable from 'react-native-animatable';
+
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerContent = (props) => {
