@@ -1,11 +1,12 @@
 var express = require('express');
 var app = express();
-
-var mysql = require('mysql2')
+var mysql = require('mysql2');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 
 app.use(bodyParser.json({ type: 'application/json' }));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 var connection = mysql.createConnection({
   host: 'localhost',
@@ -15,87 +16,84 @@ var connection = mysql.createConnection({
   database: 'dataGrow',
 });
 
+// Check if the MySQL connection is still active
+function handleDisconnect() {
+  connection.connect(function (err) {
+    if (err) {
+      console.error('Error connecting to database:', err);
+      setTimeout(handleDisconnect, 2000);
+    } else {
+      console.log('Connected to MySQL database');
+    }
+  });
+
+  connection.on('error', function (err) {
+    console.error('Database error:', err);
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+      handleDisconnect();
+    } else {
+      throw err;
+    }
+  });
+}
+
+handleDisconnect();
+
+function levenshtein(s1, s2) {
+  const s1_len = s1.length;
+  const s2_len = s2.length;
+  let cv0 = new Array(s2_len + 1);
+  let cv1 = new Array(s2_len + 1);
+
+  for (let i = 0; i <= s2_len; i++) {
+    cv0[i] = i;
+  }
+
+  for (let i = 0; i < s1_len; i++) {
+    cv1[0] = i + 1;
+
+    for (let j = 0; j < s2_len; j++) {
+      const cost = s1[i] === s2[j] ? 0 : 1;
+      cv1[j + 1] = Math.min(cv1[j] + 1, cv0[j + 1] + 1, cv0[j] + cost);
+    }
+
+    for (let j = 0; j <= s2_len; j++) {
+      cv0[j] = cv1[j];
+    }
+  }
+
+  return cv1[s2_len];
+}
+
 app.listen(3001, function () {
   console.log('Server is running on http://localhost:3001');
 });
 
-connection.connect(err => {
-    if (err) {
-      console.error('Error connecting to database:', err);
-      return;
+app.get('/plant_data_detailed', function (req, res) {
+  try {
+    const plantName = req.query.plantName;
+    if (plantName) {
+      const sql = `
+        SELECT *
+        FROM plant_data_detailed
+        WHERE (LEVENSHTEIN(scientific_name, ?) <= 4 
+        OR scientific_name LIKE ?
+        OR comm_names LIKE ?)`;
+      connection.query(sql, [plantName, `%${plantName}%`, `%${plantName}%`], (error, results) => {
+        if (error) {
+          console.error(`Error: ${error.message}`);
+          res.status(500).send('Internal Server Error');
+        } else {
+          console.log('Query results:', results);
+          res.json(results);
+        }
+      });
+    } else {
+      console.error("Invalid 'plantName' parameter");
+      res.status(400).send('Bad Request');
     }
-    console.log('Connected to MySQL database');
-  });
-
-var cors = require('cors');
-app.use(cors());
-
-DELIMITER $$
-DROP FUNCTION IF EXISTS LEVENSHTEIN $$
-CREATE FUNCTION LEVENSHTEIN(s1 VARCHAR(255) CHARACTER SET utf8, s2 VARCHAR(255) CHARACTER SET utf8)
-  RETURNS INT
-  DETERMINISTIC
-  BEGIN
-    DECLARE s1_len, s2_len, i, j, c, c_temp, cost INT;
-    DECLARE s1_char CHAR CHARACTER SET utf8;
-    -- max strlen=255 for this function
-    DECLARE cv0, cv1 VARBINARY(256);
-
-    SET s1_len = CHAR_LENGTH(s1),
-        s2_len = CHAR_LENGTH(s2),
-        cv1 = 0x00,
-        j = 1,
-        i = 1,
-        c = 0;
-
-    IF (s1 = s2) THEN
-      RETURN (0);
-    ELSEIF (s1_len = 0) THEN
-      RETURN (s2_len);
-    ELSEIF (s2_len = 0) THEN
-      RETURN (s1_len);
-    END IF;
-
-    WHILE (j <= s2_len) DO
-      SET cv1 = CONCAT(cv1, CHAR(j)),
-          j = j + 1;
-    END WHILE;
-
-    WHILE (i <= s1_len) DO
-      SET s1_char = SUBSTRING(s1, i, 1),
-          c = i,
-          cv0 = CHAR(i),
-          j = 1;
-
-      WHILE (j <= s2_len) DO
-        SET c = c + 1,
-            cost = IF(s1_char = SUBSTRING(s2, j, 1), 0, 1);
-
-        SET c_temp = ORD(SUBSTRING(cv1, j, 1)) + cost;
-        IF (c > c_temp) THEN
-          SET c = c_temp;
-        END IF;
-
-        SET c_temp = ORD(SUBSTRING(cv1, j+1, 1)) + 1;
-        IF (c > c_temp) THEN
-          SET c = c_temp;
-        END IF;
-
-        SET cv0 = CONCAT(cv0, CHAR(c)),
-            j = j + 1;
-      END WHILE;
-
-      SET cv1 = cv0,
-          i = i + 1;
-    END WHILE;
-
-    RETURN (c);
-  END $$
-
-DELIMITER ;
-
-SELECT *
-FROM plant_data_detailed
-WHERE (LEVENSHTEIN(scientific_name, 'Brownaareza') <= 4 OR MATCH(scientific_name) AGAINST ('Brownaeareza') OR MATCH(comm_names) AGAINST ('Brownaeareza'));
-
-
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).send('Internal Server Error');
+  }
+});

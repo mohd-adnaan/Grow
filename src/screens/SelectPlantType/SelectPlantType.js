@@ -22,7 +22,7 @@ const SelectPlantType = () => {
       const encodedState = encodeURIComponent(state);
       const encodedName = encodeURIComponent(name);
       //192.168.63.161
-      const response = await fetch(`http://192.168.63.161:3000/plant_data_detailed?district=${encodedDistrict}&state=${encodedState}&name=${encodedName}`, {
+      const response = await fetch(`http://192.168.145.161:3000/plant_data_detailed?district=${encodedDistrict}&state=${encodedState}&name=${encodedName}`, {
         method: 'get',
         headers: {
           'Content-Type': 'application/json',

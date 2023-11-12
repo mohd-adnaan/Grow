@@ -527,7 +527,7 @@ const ChangeLocation = () => {
             style={[styles.mapOptionButton, selectedMapOption === 'satellite' && styles.selectedMapOptionButton]}
             onPress={() => {
               setLayer('satellite');
-              setSelectedMapOption('satellite'); // Update the selected map option
+              setSelectedMapOption('satellite'); 
               setShowMapOptions(false);
             }}
           >
@@ -556,7 +556,7 @@ const ChangeLocation = () => {
           style={[styles.mapOptionButton, selectedMapOption === 'mapbox' && styles.selectedMapOptionButton]}
           onPress={() => {
             setLayer('mapbox');
-            setSelectedMapOption('mapbox'); // Update the selected map option
+            setSelectedMapOption('mapbox'); 
             setShowMapOptions(false);
           }}
         >
@@ -925,7 +925,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   modalButtonText: {
-    color: '#fff',
+    color: 'black',
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',

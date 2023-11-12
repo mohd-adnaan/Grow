@@ -1,31 +1,54 @@
 import React, { useState } from 'react';
-import { View, Text,TextInput, TouchableOpacity, Image, StyleSheet, Linking, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Linking, ScrollView } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import storage from '@react-native-firebase/storage';
 import Search from "../../../assets/Images/search.png";
+import Right from "../../../assets/Images/right.png";
 import Animated, { useSharedValue, withTiming, Easing } from 'react-native-reanimated';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
 const IdentifyPlant = () => {
   const [imageData, setImageData] = useState(null);
   const [fullImgRefPath, setFullImgRefPath] = useState('');
   const [imgDownloadUrl, setImgDownloadUrl] = useState('');
-  const [plantName, setPlantName] = useState('');
   const [identifyPlant, setIdentifyPlant] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const navigation = useNavigation();
   const project = 'all';
   const apiKey = '9mawufMYr0WYNoHUKAV6OmdWAPajTCQ0RUY9LNwXU9Q0hbkpZQ';
   const API_DETECT_URL = `https://plant.id/api/v3/identify/${project}?api-key=${apiKey}`;
   const [searchBarVisible, setSearchBarVisible] = useState(false);
-  const [placeholderText, setPlaceholderText] = useState('Search Here');
 
   const toggleSearchBar = () => {
-      setSearchBarVisible(!searchBarVisible);
-    };
+    setSearchBarVisible(!searchBarVisible);
+  };
 
-  const handleSearchButton = () => {
-      navigation.navigate('SearchPlant',{plantName});
-    }  
+  const Search = () => {
+    PlantSearch(searchText);
+    console.log(searchText);
+  };
+
+  const PlantSearch = async (plantName) => {
+    try {
+      console.log('Plant Name:', plantName);
+      const encodedplantName = encodeURIComponent(plantName);
+      //192.168.63.161
+      const response = await fetch(`http://192.168.145.161:3001/plant_data_detailed?plantName=${encodedplantName}`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await response.json();
+      console.log('Plant Details:', data);
+      navigation.navigate('PlantDetails', { data });
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   const pickImage = async () => {
     try {
       const response = await DocumentPicker.pickSingle({
@@ -72,7 +95,7 @@ const IdentifyPlant = () => {
         type: 'image/jpeg',
         name: imageData.name,
       });
-  
+
       const response = await fetch(API_DETECT_URL, {
         method: 'POST',
         headers: {
@@ -80,7 +103,7 @@ const IdentifyPlant = () => {
         },
         body: formData,
       });
-  
+
       if (response.ok) {
         const result = await response.json();
         console.log('Plant identification result:', result);
@@ -91,41 +114,58 @@ const IdentifyPlant = () => {
       console.error('Error identifying plant', err);
     }
   };
-  
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
-     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-     {searchBarVisible && (  
-  <Animatable.View
-    animation={searchBarVisible ? 'slideInRight' : 'slideOutRight'}
-    style={{
-      width: 340,
-      height: 50,
-      borderRadius: 10,
-      flexDirection: 'row',
-      alignItems: 'left',
-    }}
-  >
-    <LinearGradient colors={['#C3EDC0', '#77CC77']} style={{ flex: 1, borderRadius: 10 }}>
-      <TextInput style={{ width: '100%',marginLeft:20 }} placeholder={'Search Here'} />
-    </LinearGradient>
-  </Animatable.View>
-)}
-            {!searchBarVisible && (
-              <View style = {{margin:4}}>
-              <TouchableOpacity onPress={toggleSearchBar}>
-                <Image source={require('../../../assets/Images/search.png')} style={{ width: 35, height: 35, padding: 10}} />
-              </TouchableOpacity>
-              </View>
-            )}
-            {searchBarVisible && (
-              <View style ={{margin:-16}}>
-              <TouchableOpacity onPress={toggleSearchBar}>
-                <Image source={require('../../../assets/Images/cancel.png')} style={{ width: 28, height: 28}} />
-              </TouchableOpacity>
-              </View>
-            )}
-            </View>
+    
+      <View style={styles.searchContainer}>
+        {searchBarVisible && (
+          <Animatable.View
+            animation={searchBarVisible ? 'slideInRight' : 'slideOutRight'}
+            style={{
+              flex: 1, 
+              height: 55,
+              borderRadius: 10,
+              flexDirection: 'row',
+              alignItems: 'left',
+              overflow: 'hidden',
+            }}
+          >
+            <LinearGradient colors={['#C3EDC0', '#77CC77']} style={{ flex: 1, borderRadius: 10 }}>
+            <TextInput
+                style={{  flex: 1, marginLeft: 20, fontSize: 18 }}
+                placeholder={'Search Here'}
+                value={searchText}
+                onChangeText={(text) => setSearchText(text)}
+              />
+            </LinearGradient>
+          </Animatable.View>
+        )}
+
+        {!searchBarVisible && (
+          <View style={styles.SearchPNG}>
+            <TouchableOpacity onPress={toggleSearchBar}>
+              <Image source={require('../../../assets/Images/search.png')} style={{ width: 50, height: 50, padding: 10}} />
+            </TouchableOpacity>
+          </View>
+        )}
+        {searchBarVisible && (
+          <View>
+            <TouchableOpacity onPress={Search}>
+              <Image source={require('../../../assets/Images/right.png')} style={{ width: 37, height: 35 }} />
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {searchBarVisible && (
+          <View>
+            <TouchableOpacity onPress={toggleSearchBar}>
+              <Image source={require('../../../assets/Images/cancel.png')} style={{ width: 27, height: 28 }} />
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
+
       <View style={styles.container}>
         {imageData ? (
           <Image source={{ uri: imageData.uri }} style={styles.image} />
@@ -140,9 +180,11 @@ const IdentifyPlant = () => {
           <TouchableOpacity style={styles.button} onPress={uploadImage}>
             <Text style={styles.buttonText}>Upload Image</Text>
           </TouchableOpacity>
+          {identifyPlant && (
           <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={deleteImage}>
             <Text style={styles.buttonText}>Delete Image</Text>
           </TouchableOpacity>
+          )}
           {identifyPlant && (
             <TouchableOpacity style={[styles.button, styles.IdentifyPlantButton]} onPress={identifyPlantFunction}>
               <Text style={styles.buttonText}>Identify Plant</Text>
@@ -169,6 +211,17 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
   },
+  searchContainer:{
+  flex: 1,
+  justifyContent: 'center',
+  flexDirection: 'row' ,
+  },
+  SearchPNG: {
+    position: 'absolute',
+    top: -22,
+    left: 120,
+    padding: 10,
+  },
   image: {
     height: 200,
     width: 200,
@@ -180,6 +233,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   buttonsContainer: {
+    height: 150, 
     width: '100%',
     marginBottom: 20,
   },
