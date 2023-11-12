@@ -8,6 +8,8 @@ import Animated, { useSharedValue, withTiming, Easing } from 'react-native-reani
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import { ActivityIndicator } from 'react-native';
+
 
 const IdentifyPlant = () => {
   const [imageData, setImageData] = useState(null);
@@ -15,10 +17,9 @@ const IdentifyPlant = () => {
   const [imgDownloadUrl, setImgDownloadUrl] = useState('');
   const [identifyPlant, setIdentifyPlant] = useState(false);
   const [searchText, setSearchText] = useState('');
+  const [URL, setURL] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
-  const project = 'all';
-  const apiKey = '9mawufMYr0WYNoHUKAV6OmdWAPajTCQ0RUY9LNwXU9Q0hbkpZQ';
-  const API_DETECT_URL = `https://plant.id/api/v3/identify/${project}?api-key=${apiKey}`;
   const [searchBarVisible, setSearchBarVisible] = useState(false);
 
   const toggleSearchBar = () => {
@@ -62,62 +63,97 @@ const IdentifyPlant = () => {
 
   const uploadImage = async () => {
     try {
+      if (!imageData) {
+        console.warn('No image selected.');
+        return;
+      }
       const response = storage().ref(`/profile/${imageData.name}`);
+      setIsLoading(true); 
       const put = await response.putFile(imageData.uri);
-
       setFullImgRefPath(put.metadata.fullPath);
       const url = await response.getDownloadURL();
       setImgDownloadUrl(url);
+      setURL(url);
+      console.log(url)
       alert('Image Uploaded Successfully');
       setIdentifyPlant(true);
+      setIsLoading(false); 
     } catch (err) {
       console.error(err);
     }
   };
   const deleteImage = async () => {
     try {
+      setIsLoading(true); 
       await storage().ref(fullImgRefPath).delete();
       setIdentifyPlant(false);
+      setIsLoading(false); 
+      setImageData(null);
       console.log('Image deleted successfully.');
     } catch (err) {
       console.error(err);
     }
   };
-  const identifyPlantFunction = async () => {
+
+  const plantDetection = async () => {
     try {
       if (!imageData) {
         console.warn('No image data available.');
         return;
       }
-      const formData = new FormData();
-      formData.append('file', {
-        uri: imageData.uri,
-        type: 'image/jpeg',
-        name: imageData.name,
-      });
 
-      const response = await fetch(API_DETECT_URL, {
+      const API_KEY = "AIzaSyAD-LGSgqT1fYVIC0KF2s-0fYrLQtOWHd4";
+      const API_URL = `https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}`;
+  
+      const base64ImageData = await encodeImageBase64(imageData.uri);
+  
+      const requestData = {
+        requests: [
+          {
+            image: {
+              content: base64ImageData,
+            },
+            features: [{type: 'LABEL_DETECTION'}],
+          },
+        ],
+      };
+      const data = await fetch(API_URL, {
         method: 'POST',
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
         },
-        body: formData,
+        body: JSON.stringify(requestData),
       });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log('Plant identification result:', result);
+  
+      if (data.ok) {
+        const responseData = await data.json();
+        console.log(responseData);
+        setLabels(responseData.responses[0].labelAnnotations);
       } else {
-        console.error('Plant identification failed', response.statusText);
+        console.error('Error Detecting the Plant - API Response:', apiResponse);
+        alert('Error Detecting the image. Please try again later');
       }
-    } catch (err) {
-      console.error('Error identifying plant', err);
+    } catch (error) {
+      console.error('Error Detecting the Plant', error);
+      alert('Error Detecting the image. Please try again later');
     }
   };
+  
+  
+  const encodeImageBase64 = async (uri) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(blob);
+    });
+  };
+  
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-    
       <View style={styles.searchContainer}>
         {searchBarVisible && (
           <Animatable.View
@@ -165,14 +201,14 @@ const IdentifyPlant = () => {
           </View>
         )}
       </View>
-
-      <View style={styles.container}>
+      
+      <View style={styles.IdentifyContainer}>
+      
         {imageData ? (
           <Image source={{ uri: imageData.uri }} style={styles.image} />
         ) : (
           <Text style={styles.noImageText}>No Image Found</Text>
         )}
-
         <View style={styles.buttonsContainer}>
           <TouchableOpacity style={styles.button} onPress={pickImage}>
             <Text style={styles.buttonText}>Select Image</Text>
@@ -180,24 +216,24 @@ const IdentifyPlant = () => {
           <TouchableOpacity style={styles.button} onPress={uploadImage}>
             <Text style={styles.buttonText}>Upload Image</Text>
           </TouchableOpacity>
+          
           {identifyPlant && (
           <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={deleteImage}>
             <Text style={styles.buttonText}>Delete Image</Text>
           </TouchableOpacity>
           )}
           {identifyPlant && (
-            <TouchableOpacity style={[styles.button, styles.IdentifyPlantButton]} onPress={identifyPlantFunction}>
+            <TouchableOpacity style={[styles.button, styles.IdentifyPlantButton]} onPress={plantDetection}>
               <Text style={styles.buttonText}>Identify Plant</Text>
             </TouchableOpacity>
           )}
         </View>
-
-        <TouchableOpacity onPress={() => imgDownloadUrl && Linking.openURL(imgDownloadUrl)}>
-          <Text style={styles.urlText}>
-            Url = {imgDownloadUrl.length > 0 ? imgDownloadUrl : 'not found'}
-          </Text>
-        </TouchableOpacity>
-        <Image source={{ uri: imgDownloadUrl }} style={styles.downloadedImage} />
+        {isLoading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="x-large" color="#77CC77" />
+          <Text style={styles.loadingText}>Please wait.....</Text>
+        </View>
+      ) : null}
       </View>
     </ScrollView>
   );
@@ -205,26 +241,40 @@ const IdentifyPlant = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+    flex:1,
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
   },
   searchContainer:{
   flex: 1,
+  top:10,
   justifyContent: 'center',
   flexDirection: 'row' ,
   },
+  IdentifyContainer:{
+    top:-40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
   SearchPNG: {
-    position: 'absolute',
-    top: -22,
-    left: 120,
+    top: 10,
+    left: 140,
     padding: 10,
   },
+  loadingContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    zIndex: 999,
+  },
   image: {
-    height: 200,
-    width: 200,
+    height: 300,
+    width: 300,
     marginBottom: 20,
     borderRadius: 15,
   },
@@ -236,13 +286,14 @@ const styles = StyleSheet.create({
     height: 150, 
     width: '100%',
     marginBottom: 20,
+    alignItems: 'center',
   },
   button: {
     backgroundColor: '#007BFF',
     padding: 10,
     borderRadius: 10,
     marginBottom: 10,
-    width: '100%',
+    width: '60%',
     alignItems: 'center',
   },
   buttonText: {
@@ -266,6 +317,13 @@ const styles = StyleSheet.create({
     height: 300,
     width: 300,
     borderRadius: 15,
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'black',
+    fontFamily: 'Helvetica',
   },
 });
 
