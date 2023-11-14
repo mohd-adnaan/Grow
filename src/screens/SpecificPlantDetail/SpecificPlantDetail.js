@@ -1,10 +1,10 @@
-import React from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, Text, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Image, TouchableOpacity, Text, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useRoute, useNavigation } from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
-const images = [
+const images =[
     { key: 'erythrinaBlakei', source: require('../../../assets/plantImages/erythrinaBlakei.jpg') },
     { key: 'plumeriaAlba', source: require('../../../assets/plantImages/plumeriaAlba.jpg') },
     { key: 'abies', source: require('../../../assets/plantImages/abies.jpg') },
@@ -252,121 +252,197 @@ const images = [
     { key: 'vaticaLanceaefolia', source: require('../../../assets/plantImages/vaticaLanceaefolia.jpg') },
     { key: 'wendlandiaExserta', source: require('../../../assets/plantImages/wendlandiaExserta.jpg') },
     { key: 'ziziphusJujuba', source: require('../../../assets/plantImages/ziziphusJujuba.jpg') },
-    { key: 'defaultImage', source: require('../../../assets/plantImages/defaultImage.jpeg') },
-];
-
+    { key: 'defaultImage',source: require('../../../assets/plantImages/defaultImage.jpeg')},
+  ];
 const getImageByKey = (key) => {
     const image = images.find((img) => img.key === key);
     return image ? image.source : null;
 };
 
-const PlantDetails = () => {
-    const route = useRoute();
-    const navigation = useNavigation();
-    const data = route.params?.data || [];
+const SpecificPlantDetail = () => {
+  const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
+  const route = useRoute();
+  const navigation = useNavigation();
+  const data = route.params?.data || [];
+  console.log(SpecificPlantDetail);
+  console.log(data);
+  
+  const toggleBottomSheet = () => {
+    setBottomSheetVisible(!bottomSheetVisible);
+  };
+
+ const BottomSheet = () => {
+  if (bottomSheetVisible) {
     return (
-      <View style={styles.container}>
-        <Animatable.View style={styles.backButton} animation="fadeIn" delay={500} easing="ease-in-out" duration={800}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon name="arrow-back" color="black" size={40} />
-          </TouchableOpacity>
-        </Animatable.View>
-  
-        <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-          {data.length > 0 ? (
-            data.map((plant, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.plantContainer}
-                onPress={() => {
-                  navigation.navigate('SpecificPlantDetails', { data: plant });
-                }}
-              >
-                <View style={styles.imageContainer}>
-                  <Image source={getImageByKey(plant.imageKey)} style={styles.image} />
-                </View>
-  
-                <View style={styles.textContainer}>
-                  <Text style={styles.nameText}>{plant.comm_names.join(', ')}</Text>
-                  <Text style={styles.scientificNameText}>
-                    Scientific Name: <Text style={styles.text}>{plant.scientific_name}</Text>
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            ))
-          ) : (
-            <View style={styles.noDataContainer}>
-              <Image source={require('../../../assets/Images/no-data.gif')} style={styles.noDataImage} />
-              <Text style={styles.noDataText}>No data found</Text>
-            </View>
-          )}
+      <View style={styles.bottomSheetContainer}>
+        <ScrollView>
+              <View>
+                <View style={styles.line} />
+
+                <Text style={styles.heading}>Scientific Name:</Text>
+                <Text style={styles.scientificName1}>{data.scientific_name}</Text>
+
+                <Text style={styles.heading}>Common Name:</Text>
+                <Text style={styles.commName1}>{data.comm_names.join(', ')}</Text>
+
+                <Text style={styles.heading}>Description:</Text>
+                <Text style={styles.info}>{data.description}</Text>
+
+                <Text style={styles.heading}>Can Be Grown at Home:</Text>
+                <Text style={styles.info}>{data.can_be_grown_at_home}</Text>
+
+                <Text style={styles.heading}>Light Requirements:</Text>
+                <Text style={styles.info}>{data.light_requirements}</Text>
+
+                <Text style={styles.heading}>Watering Guidelines:</Text>
+                <Text style={styles.info}>{data.watering_guidelines}</Text>
+
+                <Text style={styles.heading}>Soil Type:</Text>
+                <Text style={styles.info}>{data.soil_type}</Text>
+
+                <Text style={styles.heading}>Planting and Spacing:</Text>
+                <Text style={styles.info}>{data.planting_and_spacing}</Text>
+
+                <Text style={styles.heading}>Growth Rate:</Text>
+                <Text style={styles.info}>{data.growth_rate}</Text>
+
+                <Text style={styles.heading}>Harvesting Information:</Text>
+                <Text style={styles.info}>{data.harvesting_information}</Text>
+
+                <Text style={styles.heading}>Pest and Disease Management:</Text>
+                <Text style={styles.info}>{data.pest_and_disease_management}</Text>
+
+                <Text style={styles.heading}>Seasonal Tips:</Text>
+                <Text style={styles.info}>{data.seasonal_tips}</Text>
+
+                <Text style={styles.heading}>Companion Plants:</Text>
+                <Text style={styles.info}>{data.companion_plants.join(', ')}</Text>
+              </View>
         </ScrollView>
       </View>
     );
-  };
+  }
+};
+
   
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      paddingTop: 50,
-    },
-    backButton: {
-      position: 'absolute',
-      zIndex: 1,
-      top: 10,
-      left: 10,
-    },
-    scrollViewContainer: {
-      padding: 20,
-    },
-    plantContainer: {
-      marginBottom: 20,
-      borderRadius: 20,
-      overflow: 'hidden',
-      backgroundColor: '#fff',
-      elevation: 3,
-    },
-    imageContainer: {
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      overflow: 'hidden',
-    },
-    image: {
-      width: '100%',
-      height: 200,
-    },
-    textContainer: {
-      padding: 15,
-    },
-    nameText: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      color: 'black',
-    },
-    scientificNameText: {
-      fontSize: 16,
-      color: 'black',
-    },
-    text: {
-      fontSize: 16,
-      color: 'black',
-      fontWeight: 'bold',
-    },
-    noDataContainer: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: 20,
-    },
-    noDataImage: {
-      width: 200,
-      height: 200,
-    },
-    noDataText: {
-      fontSize: 20,
-      paddingTop: 20,
-      color: 'grey',
-      fontWeight: 'bold',
-    },
-  });
-  
-  export default PlantDetails;
+
+return (
+  <View style={styles.container}>
+    <Animatable.View style={[styles.backButton, { marginTop: 10 }]} animation="fadeIn" delay={500} easing="ease-in-out" duration={800}>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Icon name="arrow-back" color="black" size={40} />
+      </TouchableOpacity>
+    </Animatable.View>
+    <Animatable.View style={[styles.bottomSheetButton, { marginTop: 10 }]} animation="fadeIn" delay={500} easing="ease-in-out" duration={800}>
+      <TouchableOpacity onPress={toggleBottomSheet}>
+        <Text style={styles.detailsButtonText}>{bottomSheetVisible ? "Hide Details" : "Show Details"} </Text>
+      </TouchableOpacity>
+    </Animatable.View>
+    <View style={[StyleSheet.absoluteFillObject, styles.imageBox]}>
+      <Image source={getImageByKey(data.imageKey)} style={[StyleSheet.absoluteFillObject, styles.image]} />
+    </View>
+    <View style={styles.name}>
+      <Animatable.View style={styles.header} animation="fadeInUp" delay={500} easing="ease-in-out" duration={800}>
+        <Text style={styles.scientificName}>{data.scientific_name}</Text>
+        <Text style={styles.commName}>{data.comm_names.join(', ')}</Text>
+      </Animatable.View>
+    </View>
+    <BottomSheet/>
+  </View>
+);
+};
+
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  imageBox: {
+    borderRadius: 5,
+    overflow: 'hidden',
+  },
+  image: {
+    width: 400,
+    height: 800,
+    resizeMode: 'cover',
+  },
+  backButton: {
+    position: 'absolute',
+    zIndex: 1,
+    top: 10,
+    left: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  detailsButtonText: {
+    fontSize: 25,
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  bottomSheetButton: {
+    position: 'absolute',
+    zIndex: 1,
+    top: 10,
+    right: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  name: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '30%',
+  },
+  header: {
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+  },
+  scientificName: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: 'white',
+    fontStyle: 'italic',
+  },
+  commName: {
+    fontSize: 25,
+    color: 'white',
+  },
+  bottomSheetContainer: {
+    height: '65%',
+    width: '100%',
+    backgroundColor: '#fff',
+    position: 'absolute',
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    padding: 10,
+  },
+  heading: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: 'black',
+    marginTop: 16,
+  },
+  scientificName1:{
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#303030',
+    fontStyle: 'italic',
+  },
+  commName1:{
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'black',
+  },
+  info: {
+    fontSize: 18,
+    marginBottom: 16,
+    color: 'black',
+  },
+});
+
+
+export default SpecificPlantDetail;

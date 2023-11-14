@@ -44,7 +44,7 @@ const AboutScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#77CC77',//#E4EAF7'
+    backgroundColor: '#C3EDC0',
   },
   scrollContent: {
     flexGrow: 1,
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   description: {
     padding: 20,
     borderRadius: 10,
-    backgroundColor: '#C3EDC0',
+    backgroundColor: '#FFFFFF',
     width: '90%',
     marginBottom: 20,
   },

@@ -11,8 +11,9 @@ useEffect(() => {
 
 const getDeviceToken = async () => {
     let token =await messaging().getToken();
+    console.log("Messaging Token");
     console.log(token);
-    console.log("IT is What it is ");
+    
 }
 useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
