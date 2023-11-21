@@ -19,17 +19,25 @@ const SupportScreen = ({ navigation }) => {
         </Text>
         <Text style={styles.contacts}>For any technical support, contact:</Text>
         <Text style={styles.contacts}>Mohammad Adnaan</Text>
-        <Text style={styles.contactPerson}>Pre-final year Computer Engineering Student</Text>
-        <Text style={styles.contactPerson}>Zakir Hussain College of Engineering and Technology</Text>
+        <Text style={styles.contacts}>Anannya Hiteshi</Text>
+        <Text style={styles.contactPerson}>Pre-final year Computer Engg. Students</Text>
+        <Text style={styles.contactPerson}>Zakir Hussain College of Engineering and Technology(ZHCET)</Text>
         <Text style={styles.contactPerson}>Aligarh Muslim University(AMU)</Text>
 
 
         <View style={styles.emailContainer}>
-          <Text style={styles.emailLabel}>Email:</Text>
+          <Text style={styles.emailLabel}>Email :</Text>
           <Hyperlink linkDefault={true}>
-            <Text style={styles.emailLink}>iamadnaanmohd21gmail.com</Text>
+            <Text style={styles.emailLink}>iamadnaanmohd21@gmail.com</Text>
           </Hyperlink>
-        </View> 
+        </View>
+        
+        <View style={styles.emailContainer}>
+          <Text style={styles.emailLabel}>Email :</Text>
+          <Hyperlink linkDefault={true}>
+            <Text style={styles.emailLink}>anannya04hiteshi@gmail.com</Text>
+          </Hyperlink>
+        </View>
        </View>
     </View>
   );
@@ -78,7 +86,8 @@ const styles = StyleSheet.create({
   },
   contacts: {
     fontSize: 18,
-    paddingTop: 20,
+    paddingTop: 10,
+    paddingBottom:10,
     color: '#000',
     fontWeight: 'bold',
   },
