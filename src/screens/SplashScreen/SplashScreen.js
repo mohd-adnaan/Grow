@@ -65,7 +65,7 @@ const SplashScreen = ({ navigation }) => {
                         style={styles.footerImage}
                         resizeMode="contain"
                     />
-                    <Text style={styles.footerText}>Design and Developed by Adnaan</Text>
+                    <Text style={styles.footerText}>Design and Developed by A&A</Text>
                 </View>
             </Animatable.View>
         </View>

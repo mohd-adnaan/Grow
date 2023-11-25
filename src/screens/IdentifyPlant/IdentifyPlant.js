@@ -37,7 +37,7 @@ const IdentifyPlant = () => {
       const encodedplantName = encodeURIComponent(plantName);
       //192.168.63.161
       //10.2.20.38
-      const response = await fetch(`http://192.168.247.161:3001/plant_data_detailed?plantName=${encodedplantName}`, {
+      const response = await fetch(`http://10.12.200.198:3001/plant_data_detailed?plantName=${encodedplantName}`, {
         method: 'get',
         headers: {
           'Content-Type': 'application/json',
