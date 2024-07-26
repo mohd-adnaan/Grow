@@ -3,11 +3,11 @@
 <body>
     <div class="section">
         <div class="title"><h1> Grow </h1></div>
-        <div class="description"><h1> Plant Recommendation Mobile Application based on User's location.</h1></div>
-          <h1>
+        <div class="description"><h2> Plant Recommendation Mobile Application based on User's location.</h2></div>
+          <h2>
              Your personalised green-thumb companion. Every Flower is a soul  blossoming in nature.
-          </h1>
-    <img src="/FinalAppScreenShots/GrowProject.gif" alt="Final Grow application gif">
+          </h2>
+    <img src="/FinalAppScreenShots/GrowProject.gif" alt="Final Grow application gif" width="300">
          <ul>
             <h3>
             <li>React-native 🖊️</li>
