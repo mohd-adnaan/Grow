@@ -7,7 +7,7 @@
           <h1>
              Your personalised green-thumb companion. Every Flower is a soul  blossoming in nature.
           </h1>
-    <img src="/FinalAppScreenShots/GrowProject.gif" alt="Final Grow application gif">
+       <img src="/FinalAppScreenShots/GrowProject.gif" alt="Final Grow application gif" width="300">
          <ul>
             <h3>
             <li>React-native 🖊️</li>
